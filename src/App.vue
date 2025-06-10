@@ -1,12 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <el-config-provider :locale="currentLocale">
+    <router-view />
+  </el-config-provider>
 </template>
 
 <script>
+import { defineComponent } from 'vue'
+import { ElConfigProvider } from 'element-plus';
+import en from "element-plus/es/locale/lang/en";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import plusEn from "plus-pro-components/es/locale/lang/en";
+import plusZhCn from "plus-pro-components/es/locale/lang/zh-cn";
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
+    ElConfigProvider
+  },
+  computed: {
+    currentLocale() {
+      return this.$storage.locale?.locale == 'zh' ? 
+      { ...zhCn, ...plusZhCn } :
+      { ...en, ...plusEn }
+    }
+  },
+  setup() {
+    const env = import.meta.env
+    console.log(env)
   }
-}
+})
 </script>
