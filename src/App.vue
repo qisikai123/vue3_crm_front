@@ -6,27 +6,23 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { ElConfigProvider } from 'element-plus';
-import en from "element-plus/es/locale/lang/en";
-import zhCn from "element-plus/es/locale/lang/zh-cn";
-import plusEn from "plus-pro-components/es/locale/lang/en";
-import plusZhCn from "plus-pro-components/es/locale/lang/zh-cn";
+import { ElConfigProvider } from 'element-plus'
+import en from 'element-plus/es/locale/lang/en'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import plusEn from 'plus-pro-components/es/locale/lang/en'
+import plusZhCn from 'plus-pro-components/es/locale/lang/zh-cn'
 
 export default defineComponent({
   name: 'App',
   components: {
-    ElConfigProvider
+    ElConfigProvider,
   },
   computed: {
     currentLocale() {
-      return this.$storage.locale?.locale == 'zh' ? 
-      { ...zhCn, ...plusZhCn } :
-      { ...en, ...plusEn }
-    }
+      return this.$storage.locale?.locale == 'zh'
+        ? { ...zhCn, ...plusZhCn }
+        : { ...en, ...plusEn }
+    },
   },
-  setup() {
-    const env = import.meta.env
-    console.log(env)
-  }
 })
 </script>
