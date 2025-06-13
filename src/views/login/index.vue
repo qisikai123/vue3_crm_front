@@ -13,6 +13,9 @@ import TypeIt from '@/components/ReTypeit/index'
 import { useNav } from '@/layout/hooks/useNav'
 import { useUserStoreHook } from '@/store/modules/user'
 import { ReImageVerify } from '@/components/ReImageVerify/index'
+import { useRouter } from 'vue-router'
+import { initRouter, getTopMenu } from '@/router/utils'
+import { message } from '@/utils/message'
 
 const { getDropdownItemStyle, getDropdownItemClass } = useNav()
 const { locale, translationCh, translationEn } = useTranslationLang()
@@ -20,6 +23,7 @@ const { locale, translationCh, translationEn } = useTranslationLang()
 const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange()
 dataThemeChange(overallStyle.value)
 const { t } = useI18n()
+const router = useRouter()
 
 const options = {
   strings: [t('global.author')],
@@ -39,8 +43,8 @@ let loginForm = ref<{
   password: string
   verifyCode: string
 }>({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: 'admin123',
   verifyCode: '',
 })
 let registerForm = ref<{ username: string; email: string; password: string }>({
@@ -51,39 +55,65 @@ let registerForm = ref<{ username: string; email: string; password: string }>({
 const imgCode = ref('')
 
 watch(imgCode, (value) => {
-  useUserStoreHook().SET_VERIFY_CODE(value)
+  useUserStoreHook().SET_VERIFYCODE(value)
 })
 
 const bulletsClick = (data: number): void => {
   textGroupStyle.value = `translateY(${-(data - 1) * 2.2}rem)`
   bulletsFlag.value = data
 }
-onMounted(() => {})
+
+const loading = ref<boolean>(false)
 
 const handleLogin = () => {
   // 表单验证
   if (!loginForm.value.username) {
-    ElMessage.error('用户名不能为空')
+    ElMessage.error(t('login.usernameEmpty'))
     return
   }
   if (!loginForm.value.password) {
-    ElMessage.error('密码不能为空')
+    ElMessage.error(t('login.passwordEmpty'))
     return
   }
   if (!loginForm.value.verifyCode) {
-    ElMessage.error('验证码不能为空')
+    ElMessage.error(t('login.verifyCodeEmpty'))
     return
   }
   if (
     loginForm.value.verifyCode.toLowerCase() !== imgCode.value.toLowerCase()
   ) {
-    ElMessage.error('验证码不正确')
+    ElMessage.error(t('login.verifyCodeError'))
     return
   }
+  loading.value = true
+  useUserStoreHook()
+    .loginByUsername(loginForm.value)
+    .then((res: any) => {
+      return initRouter().then(() => {
+        router.push(getTopMenu(true).path).then(() => {
+          message(t('login.loginSuccess'), { type: 'success' })
+        })
+      })
+    })
+    .finally(() => {
+      loading.value = false
+    })
+}
 
-  // 验证通过，继续处理登录逻辑
-  console.log('表单验证通过：', loginForm.value)
-  return
+const handleRegister = () => {
+  // 表单验证
+  if (!registerForm.value.username) {
+    ElMessage.error(t('login.usernameEmpty'))
+    return
+  }
+  if (!registerForm.value.email) {
+    ElMessage.error(t('login.emailEmpty'))
+    return
+  }
+  if (!registerForm.value.password) {
+    ElMessage.error(t('login.passwordEmpty'))
+    return
+  }
 }
 </script>
 <template>
@@ -207,6 +237,7 @@ const handleLogin = () => {
                 <Motion :delay="400">
                   <input
                     type="submit"
+                    v-loading="loading"
                     :value="t('login.login')"
                     class="sign-btn"
                   />
@@ -219,7 +250,13 @@ const handleLogin = () => {
               </div>
             </form>
 
-            <form action="index.html" autocomplete="off" class="sign-up-form">
+            <!-- 注册 -->
+            <form
+              action="index.html"
+              autocomplete="off"
+              class="sign-up-form"
+              @submit.prevent="handleRegister"
+            >
               <div class="flex justify-start items-center">
                 <img src="/favicon.ico" :alt="t('global.author')" />
                 <h4>{{ t('global.author') }}</h4>
@@ -275,7 +312,11 @@ const handleLogin = () => {
                   <label>{{ t('login.password') }}</label>
                 </div>
 
-                <input type="submit" value="Sign Up" class="sign-btn" />
+                <input
+                  type="submit"
+                  :value="t('login.register')"
+                  class="sign-btn"
+                />
 
                 <p class="text">
                   {{ t('login.throughRegister') }}
@@ -289,7 +330,12 @@ const handleLogin = () => {
             </form>
           </div>
 
-          <div class="carousel bg-[#ffe0d2] dark:bg-gray-700">
+          <div class="carousel bg-[#f0e3dd] dark:bg-gray-700">
+            <div class="images-wrapper">
+              <!-- <img src="../../assets/vue.svg" class="image img-1 show" alt="" />
+              <img src="../../assets/vue.svg" class="image img-2" alt="" />
+              <img src="../../assets/vue.svg" class="image img-3" alt="" /> -->
+            </div>
             <div class="text-slider">
               <div class="text-wrap">
                 <div class="text-group" :style="{ transform: textGroupStyle }">
@@ -334,7 +380,7 @@ const handleLogin = () => {
     max-width: 1020px;
     height: 640px;
     border-radius: 3.3rem;
-    box-shadow: 0 60px 40px -30px rgba(0, 0, 0, 0.27);
+    box-shadow: 0 0px 12px rgba(0, 0, 0, 0.27);
   }
 
   .inner-box {
@@ -472,8 +518,6 @@ const handleLogin = () => {
     display: inline-block;
     width: 100%;
     height: 43px;
-    background-color: #151111;
-    color: #fff;
     border: none;
     cursor: pointer;
     border-radius: 0.8rem;

@@ -65,6 +65,16 @@ declare global {
       themeColor?: string
       overallStyle?: string
     }
+    configure: {
+      grey?: boolean
+      weak?: boolean
+      hideTabs?: boolean
+      hideFooter?: boolean
+      showLogo?: boolean
+      showModel?: string
+      multiTagsCache?: boolean
+      stretch?: boolean | number
+    }
   }
 
   /**
