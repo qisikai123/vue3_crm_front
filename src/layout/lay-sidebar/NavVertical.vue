@@ -1,45 +1,47 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useNav } from '@/layout/hooks/useNav'
-import { usePermissionStoreHook } from '@/store/modules/permission'
-import { storageLocal, isAllEmpty } from '@pureadmin/utils'
-import { responsiveStorageNameSpace } from '@/config'
-import LaySidebarLogo from '../lay-sidebar/components/SidebarLogo.vue'
-import { useRoute } from 'vue-router'
-import LaySidebarItem from './components/SidebarItem.vue'
+import { computed, ref } from "vue";
+import { useNav } from "@/layout/hooks/useNav";
+import { usePermissionStoreHook } from "@/store/modules/permission";
+import { storageLocal, isAllEmpty } from "@pureadmin/utils";
+import { responsiveStorageNameSpace } from "@/config";
+import LaySidebarLogo from "../lay-sidebar/components/SidebarLogo.vue";
+import { useRoute } from "vue-router";
+import LaySidebarItem from "./components/SidebarItem.vue";
+import LaySidebarCenterCollapse from "./components/SidebarCenterCollapse.vue";
+import LaySidebarLeftCollapse from "./components/SidebarLeftCollapse.vue";
 
-const route = useRoute()
+const route = useRoute();
 const {
   device,
   pureApp,
   isCollapse,
   tooltipEffect,
   menuSelect,
-  toggleSideBar,
-} = useNav()
+  toggleSideBar
+} = useNav();
 
-const subMenuData = ref([])
+const subMenuData = ref([]);
 const showLogo = ref(
   storageLocal().getItem<StorageConfigs>(
     `${responsiveStorageNameSpace()}configure`
   )?.showLogo ?? true
-)
-const isShow = ref(false)
+);
+const isShow = ref(false);
 
 const menuData = computed(() => {
-  return pureApp.layout === 'mix' && device.value !== 'mobile'
+  return pureApp.layout === "mix" && device.value !== "mobile"
     ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus
-})
-console.log(menuData.value, 'menuData')
+    : usePermissionStoreHook().wholeMenus;
+});
+console.log(menuData.value, "menuData");
 
 const loading = computed(() =>
-  pureApp.layout === 'mix' ? false : menuData.value.length === 0 ? true : false
-)
+  pureApp.layout === "mix" ? false : menuData.value.length === 0 ? true : false
+);
 
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
-)
+);
 </script>
 <template>
   <div
@@ -72,6 +74,16 @@ const defaultActive = computed(() =>
         />
       </el-menu>
     </el-scrollbar>
+    <LaySidebarCenterCollapse
+      v-if="device !== 'mobile' && (isShow || isCollapse)"
+      :is-active="pureApp.sidebar.opened"
+      @toggleClick="toggleSideBar"
+    />
+    <LaySidebarLeftCollapse
+      v-if="device !== 'mobile'"
+      :is-active="pureApp.sidebar.opened"
+      @toggleClick="toggleSideBar"
+    />
   </div>
 </template>
 <style lang="scss" scoped></style>

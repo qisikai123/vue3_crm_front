@@ -30,6 +30,12 @@ app.component('IconifyIconOffline', IconifyIconOffline)
 app.component('IconifyIconOnline', IconifyIconOnline)
 app.component('FontIcon', FontIcon)
 
+// 全局注册vue-tippy
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/light.css'
+import VueTippy from 'vue-tippy'
+app.use(VueTippy)
+
 getPlatformConfig(app).then((config) => {
   setupStore(app)
   injectResponsiveStorage(app, config)

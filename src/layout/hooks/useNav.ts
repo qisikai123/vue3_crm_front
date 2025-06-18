@@ -8,8 +8,6 @@ import { emitter } from '@/utils/mitt'
 import { router, remainingPaths } from '@/router'
 import { getConfig } from '@/config'
 
-const tooltipEffect = getConfig()?.TooltipEffect ?? 'light'
-
 export const useNav = () => {
   const { wholeMenus } = storeToRefs(usePermissionStoreHook())
 
@@ -80,6 +78,8 @@ export const useNav = () => {
       overflow: 'hidden',
     }
   })
+
+  const tooltipEffect = getConfig()?.TooltipEffect ?? 'light'
 
   return {
     $storage,
