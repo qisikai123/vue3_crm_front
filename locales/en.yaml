@@ -44,9 +44,9 @@ menus:
   pureMarkdown: Markdown
   pureEditor: Editor
   pureAbnormal: Abnormal Page
-  pureFourZeroFour: '404'
-  pureFourZeroOne: '403'
-  pureFive: '500'
+  pureFourZeroFour: "404"
+  pureFourZeroOne: "403"
+  pureFive: "500"
   pureComponents: Components
   pureDialog: Dialog
   pureDrawer: Drawer
@@ -173,3 +173,10 @@ buttons:
   pureBackTop: BackTop
   pureOpenText: Open
   pureCloseText: Close
+search:
+  pureTotal: Total
+  pureHistory: History
+  pureCollect: Collect
+  pureDragSort: （Drag Sort）
+  pureEmpty: Empty
+  purePlaceholder: Search Menu

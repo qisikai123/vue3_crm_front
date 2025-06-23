@@ -44,9 +44,9 @@ menus:
   pureMarkdown: Markdown
   pureEditor: 编辑器
   pureAbnormal: 异常页面
-  pureFourZeroFour: '404'
-  pureFourZeroOne: '403'
-  pureFive: '500'
+  pureFourZeroFour: "404"
+  pureFourZeroOne: "403"
+  pureFive: "500"
   pureComponents: 组件
   pureDialog: 函数式弹框
   pureDrawer: 函数式抽屉
@@ -173,3 +173,10 @@ buttons:
   pureBackTop: 回到顶部
   pureOpenText: 开
   pureCloseText: 关
+search:
+  pureTotal: 共
+  pureHistory: 搜索历史
+  pureCollect: 收藏
+  pureDragSort: （可拖拽排序）
+  pureEmpty: 暂无搜索结果
+  purePlaceholder: 搜索菜单（支持拼音搜索）

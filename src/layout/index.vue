@@ -3,7 +3,15 @@ import "animate.css";
 import "@/components/ReIcon/src/offlineIcon";
 import { setType } from "./types";
 import { useI18n } from "vue-i18n";
-import { ref, computed, reactive, onMounted, onBeforeMount } from "vue";
+import {
+  ref,
+  computed,
+  reactive,
+  onMounted,
+  onBeforeMount,
+  h,
+  defineComponent
+} from "vue";
 import { useAppStoreHook } from "@/store/modules/app";
 import { useSettingStoreHook } from "@/store/modules/settings";
 import {
@@ -15,6 +23,9 @@ import {
 import { useLayout } from "./hooks/useLayout";
 import NavVertical from "./lay-sidebar/NavVertical.vue";
 import { useDataThemeChange } from "./hooks/useDataThemeChange";
+import BackTopIcon from "@/assets/svg/back_top.svg?component";
+import LayContent from "./lay-content/index.vue";
+import LayNavbar from "./lay-navbar/index.vue";
 
 const { t } = useI18n();
 const { isDark } = useDark();
@@ -110,6 +121,37 @@ onMounted(() => {
 onBeforeMount(() => {
   useDataThemeChange().dataThemeChange($storage.layout?.overallStyle);
 });
+
+const LayHeader = defineComponent({
+  name: "LayHeader",
+  render() {
+    return h(
+      "div",
+      {
+        class: { "fixed-header": set.fixedHeader },
+        style: [
+          set.hideTabs && layout.value.includes("horizontal")
+            ? isDark.value
+              ? "box-shadow: 0 1px 4px #0d0d0d"
+              : "box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08)"
+            : ""
+        ]
+      },
+      {
+        default: () => [
+          !pureSetting.hiddenSideBar &&
+          (layout.value.includes("vertical") || layout.value.includes("mix"))
+            ? h(LayNavbar)
+            : null
+          // !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
+          //   ? h(NavHorizontal)
+          //   : null,
+          // h(LayTag)
+        ]
+      }
+    );
+  }
+});
 </script>
 <template>
   <div ref="appWrapperRef" :class="['app-wrapper', set.classes]">
@@ -134,7 +176,22 @@ onBeforeMount(() => {
         pureSetting.hiddenSideBar ? 'main-hidden' : ''
       ]"
     >
-      111
+      <div v-if="set.fixedHeader">
+        <LayHeader />
+        <!-- 主体内容 -->
+        <LayContent :fixed-header="set.fixedHeader" />
+      </div>
+      <el-scrollbar v-else>
+        <el-backtop
+          :title="t('buttons.pureBackTop')"
+          target=".main-container .el-scrollbar__wrap"
+        >
+          <BackTopIcon />
+        </el-backtop>
+        <LayHeader />
+        <!-- 主体内容 -->
+        <LayContent :fixed-header="set.fixedHeader" />
+      </el-scrollbar>
     </div>
   </div>
 </template>

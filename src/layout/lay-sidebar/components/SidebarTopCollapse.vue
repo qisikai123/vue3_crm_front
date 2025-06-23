@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  name: "SidebarTopCollapse"
+};
+</script>
+
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import MenuFold from "~icons/ri/menu-fold-fill";

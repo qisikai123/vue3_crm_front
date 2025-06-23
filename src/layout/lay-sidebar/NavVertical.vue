@@ -1,3 +1,8 @@
+<script lang="ts">
+export default {
+  name: "NavVertical"
+};
+</script>
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
