@@ -9,6 +9,9 @@ import { getConfig } from "@/config";
 import { useUserStoreHook } from "@/store/modules/user";
 import { useGlobal, isAllEmpty } from "@pureadmin/utils";
 import Avatar from "@/assets/user.jpeg";
+import { useFullscreen } from "@vueuse/core";
+import ExitFullscreen from "~icons/ri/fullscreen-exit-fill";
+import Fullscreen from "~icons/ri/fullscreen-fill";
 
 export const useNav = () => {
   const { wholeMenus } = storeToRefs(usePermissionStoreHook());
@@ -114,6 +117,9 @@ export const useNav = () => {
     router.push({ name: "AccountSettings" });
   }
 
+  // 全屏
+  const { toggle, isFullscreen } = useFullscreen();
+
   return {
     $storage,
     handleResize,
@@ -134,6 +140,10 @@ export const useNav = () => {
     username,
     userAvatar,
     avatarsStyle,
-    toAccountSettings
+    toAccountSettings,
+    toggle,
+    isFullscreen,
+    ExitFullscreen,
+    Fullscreen
   };
 };

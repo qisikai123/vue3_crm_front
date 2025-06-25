@@ -180,3 +180,11 @@ search:
   pureDragSort: （Drag Sort）
   pureEmpty: Empty
   purePlaceholder: Search Menu
+status:
+  pureLoad: Loading...
+  pureMessage: Message
+  pureNotify: Notify
+  pureTodo: Todo
+  pureNoMessage: No Message
+  pureNoNotify: No Notify
+  pureNoTodo: No Todo

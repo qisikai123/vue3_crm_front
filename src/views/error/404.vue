@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import noExist from "@/assets/status/404.svg?component";
+import { defineOptions } from "vue";
 
 defineOptions({
   name: "404"

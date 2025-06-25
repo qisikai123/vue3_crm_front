@@ -10,7 +10,7 @@ export default defineFakeRoute([
       return {
         success: true,
         data: {
-          avatar: "https://avatars.githubusercontent.com/u/44761321",
+          avatar: "",
           username: "admin",
           nickname: "小铭",
           email: "pureadmin@163.com",

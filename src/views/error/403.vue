@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import noAccess from "@/assets/status/403.svg?component";
+import { defineOptions } from "vue";
 
 defineOptions({
   name: "403"

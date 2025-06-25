@@ -26,6 +26,7 @@ import { useDataThemeChange } from "./hooks/useDataThemeChange";
 import BackTopIcon from "@/assets/svg/back_top.svg?component";
 import LayContent from "./lay-content/index.vue";
 import LayNavbar from "./lay-navbar/index.vue";
+import LayTag from "./lay-tag/index.vue";
 
 const { t } = useI18n();
 const { isDark } = useDark();
@@ -142,11 +143,11 @@ const LayHeader = defineComponent({
           !pureSetting.hiddenSideBar &&
           (layout.value.includes("vertical") || layout.value.includes("mix"))
             ? h(LayNavbar)
-            : null
+            : null,
           // !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
           //   ? h(NavHorizontal)
           //   : null,
-          // h(LayTag)
+          h(LayTag)
         ]
       }
     );

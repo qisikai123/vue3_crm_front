@@ -180,3 +180,11 @@ search:
   pureDragSort: （可拖拽排序）
   pureEmpty: 暂无搜索结果
   purePlaceholder: 搜索菜单（支持拼音搜索）
+status:
+  pureLoad: 加载中...
+  pureMessage: 消息
+  pureNotify: 通知
+  pureTodo: 待办
+  pureNoMessage: 暂无消息
+  pureNoNotify: 暂无通知
+  pureNoTodo: 暂无待办

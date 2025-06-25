@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { storageLocal, isAllEmpty } from "@pureadmin/utils";
@@ -14,6 +14,7 @@ import { useRoute } from "vue-router";
 import LaySidebarItem from "./components/SidebarItem.vue";
 import LaySidebarCenterCollapse from "./components/SidebarCenterCollapse.vue";
 import LaySidebarLeftCollapse from "./components/SidebarLeftCollapse.vue";
+import { findRouteByPath, getParentPaths } from "@/router/utils";
 
 const route = useRoute();
 const {
@@ -38,7 +39,6 @@ const menuData = computed(() => {
     ? subMenuData.value
     : usePermissionStoreHook().wholeMenus;
 });
-console.log(menuData.value, "menuData");
 
 const loading = computed(() =>
   pureApp.layout === "mix" ? false : menuData.value.length === 0 ? true : false
@@ -47,6 +47,33 @@ const loading = computed(() =>
 const defaultActive = computed(() =>
   !isAllEmpty(route.meta?.activePath) ? route.meta.activePath : route.path
 );
+
+watch(
+  () => [route.path, usePermissionStoreHook().wholeMenus],
+  () => {
+    if (route.path.includes("/redirect")) return;
+    getSubMenuData();
+    menuSelect(route.path);
+  }
+);
+
+function getSubMenuData() {
+  let path = "";
+  path = defaultActive.value;
+  subMenuData.value = [];
+  // path的上级路由组成的数组
+  const parentPathArr = getParentPaths(
+    path,
+    usePermissionStoreHook().wholeMenus
+  );
+  // 当前路由的父级路由信息
+  const parenetRoute = findRouteByPath(
+    parentPathArr[0] || path,
+    usePermissionStoreHook().wholeMenus
+  );
+  if (!parenetRoute?.children) return;
+  subMenuData.value = parenetRoute?.children;
+}
 </script>
 <template>
   <div

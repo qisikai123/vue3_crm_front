@@ -1,120 +1,115 @@
 <script lang="ts" setup>
-import { onMounted, ref, defineOptions, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { ElMessage } from 'element-plus'
-import { useTranslationLang } from '@/layout/hooks/useTranslationLang'
-import globalization from '@/assets/svg/globalization.svg?component'
-import Check from '~icons/ep/check'
-import { useDataThemeChange } from '@/layout/hooks/useDataThemeChange'
-import dayIcon from '@/assets/svg/day.svg?component'
-import darkIcon from '@/assets/svg/dark.svg?component'
-import Motion from './utils/motion'
-import TypeIt from '@/components/ReTypeit/index'
-import { useNav } from '@/layout/hooks/useNav'
-import { useUserStoreHook } from '@/store/modules/user'
-import { ReImageVerify } from '@/components/ReImageVerify/index'
-import { useRouter } from 'vue-router'
-import { initRouter, getTopMenu } from '@/router/utils'
-import { message } from '@/utils/message'
+import { onMounted, ref, defineOptions, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { ElMessage } from "element-plus";
+import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import dayIcon from "@/assets/svg/day.svg?component";
+import darkIcon from "@/assets/svg/dark.svg?component";
+import Motion from "./utils/motion";
+import TypeIt from "@/components/ReTypeit/index";
+import { useNav } from "@/layout/hooks/useNav";
+import { useUserStoreHook } from "@/store/modules/user";
+import { ReImageVerify } from "@/components/ReImageVerify/index";
+import { useRouter } from "vue-router";
+import { initRouter, getTopMenu } from "@/router/utils";
+import { message } from "@/utils/message";
+import { ReI18nToggle } from "@/components/ReI18nToggle/index";
 
-const { getDropdownItemStyle, getDropdownItemClass } = useNav()
-const { locale, translationCh, translationEn } = useTranslationLang()
-
-const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange()
-dataThemeChange(overallStyle.value)
-const { t } = useI18n()
-const router = useRouter()
+const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
+dataThemeChange(overallStyle.value);
+const { t } = useI18n();
+const router = useRouter();
 
 const options = {
-  strings: [t('global.author')],
+  strings: [t("global.author")],
   cursor: false,
-  speed: 100,
-}
+  speed: 100
+};
 
 defineOptions({
-  name: 'Login',
-})
+  name: "Login"
+});
 
-let bulletsFlag = ref<number>(1)
-let textGroupStyle = ref<string>('translateY(0)')
-let mainStyle = ref<Boolean>(false)
+let bulletsFlag = ref<number>(1);
+let textGroupStyle = ref<string>("translateY(0)");
+let mainStyle = ref<Boolean>(false);
 let loginForm = ref<{
-  username: string
-  password: string
-  verifyCode: string
+  username: string;
+  password: string;
+  verifyCode: string;
 }>({
-  username: 'admin',
-  password: 'admin123',
-  verifyCode: '',
-})
+  username: "admin",
+  password: "admin123",
+  verifyCode: ""
+});
 let registerForm = ref<{ username: string; email: string; password: string }>({
-  username: '',
-  email: '',
-  password: '',
-})
-const imgCode = ref('')
+  username: "",
+  email: "",
+  password: ""
+});
+const imgCode = ref("");
 
-watch(imgCode, (value) => {
-  useUserStoreHook().SET_VERIFYCODE(value)
-})
+watch(imgCode, value => {
+  useUserStoreHook().SET_VERIFYCODE(value);
+});
 
 const bulletsClick = (data: number): void => {
-  textGroupStyle.value = `translateY(${-(data - 1) * 2.2}rem)`
-  bulletsFlag.value = data
-}
+  textGroupStyle.value = `translateY(${-(data - 1) * 2.2}rem)`;
+  bulletsFlag.value = data;
+};
 
-const loading = ref<boolean>(false)
+const loading = ref<boolean>(false);
 
 const handleLogin = () => {
   // 表单验证
   if (!loginForm.value.username) {
-    ElMessage.error(t('login.usernameEmpty'))
-    return
+    ElMessage.error(t("login.usernameEmpty"));
+    return;
   }
   if (!loginForm.value.password) {
-    ElMessage.error(t('login.passwordEmpty'))
-    return
+    ElMessage.error(t("login.passwordEmpty"));
+    return;
   }
   if (!loginForm.value.verifyCode) {
-    ElMessage.error(t('login.verifyCodeEmpty'))
-    return
+    ElMessage.error(t("login.verifyCodeEmpty"));
+    return;
   }
   if (
     loginForm.value.verifyCode.toLowerCase() !== imgCode.value.toLowerCase()
   ) {
-    ElMessage.error(t('login.verifyCodeError'))
-    return
+    ElMessage.error(t("login.verifyCodeError"));
+    return;
   }
-  loading.value = true
+  loading.value = true;
   useUserStoreHook()
     .loginByUsername(loginForm.value)
     .then((res: any) => {
       return initRouter().then(() => {
         router.push(getTopMenu(true).path).then(() => {
-          message(t('login.loginSuccess'), { type: 'success' })
-        })
-      })
+          message(t("login.loginSuccess"), { type: "success" });
+        });
+      });
     })
     .finally(() => {
-      loading.value = false
-    })
-}
+      loading.value = false;
+    });
+};
 
 const handleRegister = () => {
   // 表单验证
   if (!registerForm.value.username) {
-    ElMessage.error(t('login.usernameEmpty'))
-    return
+    ElMessage.error(t("login.usernameEmpty"));
+    return;
   }
   if (!registerForm.value.email) {
-    ElMessage.error(t('login.emailEmpty'))
-    return
+    ElMessage.error(t("login.emailEmpty"));
+    return;
   }
   if (!registerForm.value.password) {
-    ElMessage.error(t('login.passwordEmpty'))
-    return
+    ElMessage.error(t("login.passwordEmpty"));
+    return;
   }
-}
+};
 </script>
 <template>
   <div class="login-box">
@@ -128,43 +123,7 @@ const handleRegister = () => {
           :inactive-icon="darkIcon"
           @change="dataThemeChange"
         />
-        <el-dropdown trigger="click">
-          <globalization
-            class="hover:text-primary hover:bg-[transparent]! w-[20px] h-[20px] ml-1.5 cursor-pointer outline-hidden duration-300"
-          />
-          <template #dropdown>
-            <el-dropdown-menu class="translation">
-              <el-dropdown-item
-                :style="getDropdownItemStyle(locale, 'zh')"
-                :class="[
-                  'dark:text-white!',
-                  getDropdownItemClass(locale, 'zh'),
-                ]"
-                @click="translationCh"
-              >
-                <IconifyIconOffline
-                  v-show="locale === 'zh'"
-                  class="check-zh"
-                  :icon="Check"
-                />
-                简体中文
-              </el-dropdown-item>
-              <el-dropdown-item
-                :style="getDropdownItemStyle(locale, 'en')"
-                :class="[
-                  'dark:text-white!',
-                  getDropdownItemClass(locale, 'en'),
-                ]"
-                @click="translationEn"
-              >
-                <span v-show="locale === 'en'" class="check-en">
-                  <IconifyIconOffline :icon="Check" />
-                </span>
-                English
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <ReI18nToggle />
       </div>
       <div class="box bg-gray-50 dark:bg-gray-800">
         <div class="inner-box">
@@ -181,12 +140,12 @@ const handleRegister = () => {
               </div>
 
               <div class="heading">
-                <h6>{{ t('login.noRegister') }}</h6>
+                <h6>{{ t("login.noRegister") }}</h6>
                 <a
                   href="javascript:void(0)"
                   @click="mainStyle = true"
                   class="toggle"
-                  >{{ t('login.register') }}</a
+                  >{{ t("login.register") }}</a
                 >
               </div>
 
@@ -203,7 +162,7 @@ const handleRegister = () => {
                       required
                     />
 
-                    <label>{{ t('login.username') }}</label>
+                    <label>{{ t("login.username") }}</label>
                   </div>
                 </Motion>
 
@@ -218,7 +177,7 @@ const handleRegister = () => {
                       autocomplete="off"
                       required
                     />
-                    <label>{{ t('login.password') }}</label>
+                    <label>{{ t("login.password") }}</label>
                   </div>
                 </Motion>
 
@@ -244,8 +203,8 @@ const handleRegister = () => {
                 </Motion>
 
                 <p class="text">
-                  {{ t('login.forgetPassword') }}
-                  <a href="javascript:void(0)">{{ t('login.getHelp') }}</a>
+                  {{ t("login.forgetPassword") }}
+                  <a href="javascript:void(0)">{{ t("login.getHelp") }}</a>
                 </p>
               </div>
             </form>
@@ -259,17 +218,17 @@ const handleRegister = () => {
             >
               <div class="flex justify-start items-center">
                 <img src="/favicon.ico" :alt="t('global.author')" />
-                <h4>{{ t('global.author') }}</h4>
+                <h4>{{ t("global.author") }}</h4>
               </div>
 
               <div class="heading">
-                <h2>{{ t('login.startNow') }}</h2>
-                <h6>{{ t('login.alreadyHaveAccount') }}</h6>
+                <h2>{{ t("login.startNow") }}</h2>
+                <h6>{{ t("login.alreadyHaveAccount") }}</h6>
                 <a
                   href="javascript:void(0)"
                   @click="mainStyle = false"
                   class="toggle"
-                  >{{ t('login.login') }}</a
+                  >{{ t("login.login") }}</a
                 >
               </div>
 
@@ -284,7 +243,7 @@ const handleRegister = () => {
                     autocomplete="off"
                     required
                   />
-                  <label>{{ t('login.username') }}</label>
+                  <label>{{ t("login.username") }}</label>
                 </div>
 
                 <div class="input-wrap">
@@ -296,7 +255,7 @@ const handleRegister = () => {
                     autocomplete="off"
                     required
                   />
-                  <label>{{ t('login.email') }}</label>
+                  <label>{{ t("login.email") }}</label>
                 </div>
 
                 <div class="input-wrap">
@@ -309,7 +268,7 @@ const handleRegister = () => {
                     autocomplete="off"
                     required
                   />
-                  <label>{{ t('login.password') }}</label>
+                  <label>{{ t("login.password") }}</label>
                 </div>
 
                 <input
@@ -319,11 +278,11 @@ const handleRegister = () => {
                 />
 
                 <p class="text">
-                  {{ t('login.throughRegister') }}
-                  <a href="javascript:void(0)">{{ t('login.serviceTerms') }}</a>
-                  {{ t('login.and') }}
+                  {{ t("login.throughRegister") }}
+                  <a href="javascript:void(0)">{{ t("login.serviceTerms") }}</a>
+                  {{ t("login.and") }}
                   <a href="javascript:void(0)">{{
-                    t('login.privacyPolicy')
+                    t("login.privacyPolicy")
                   }}</a>
                 </p>
               </div>
@@ -339,9 +298,9 @@ const handleRegister = () => {
             <div class="text-slider">
               <div class="text-wrap">
                 <div class="text-group" :style="{ transform: textGroupStyle }">
-                  <h2>{{ t('login.worldBeautiful') }}</h2>
-                  <h2>{{ t('login.hopeYouAlwaysLove') }}</h2>
-                  <h2>{{ t('login.rememberSmile') }}</h2>
+                  <h2>{{ t("login.worldBeautiful") }}</h2>
+                  <h2>{{ t("login.hopeYouAlwaysLove") }}</h2>
+                  <h2>{{ t("login.rememberSmile") }}</h2>
                 </div>
               </div>
 

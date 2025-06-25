@@ -1,8 +1,21 @@
+<script lang="ts">
+export default {
+  name: "LayNavbar"
+};
+</script>
 <script lang="ts" setup>
 import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.vue";
 import LaySidebarBreadCrumb from "../lay-sidebar/components/SidebarBreadCrumb.vue";
 import { useNav } from "@/layout/hooks/useNav";
 import LaySearch from "../lay-search/index.vue";
+import ReI18nToggle from "@/components/ReI18nToggle/index";
+import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vue";
+import LayNotice from "../lay-notice/index.vue";
+import AccountSettingsIcon from "~icons/ri/user-settings-line";
+import LogoutCircleRLine from "~icons/ri/logout-circle-r-line";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const {
   layout,
@@ -34,7 +47,39 @@ const {
     />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
+      <!-- 搜索 -->
       <LaySearch id="header-search" />
+      <!-- 国际化 -->
+      <ReI18nToggle id="header-translation" />
+      <!-- 全屏 -->
+      <LaySidebarFullScreen id="full-screen" />
+      <!-- 通知 -->
+      <LayNotice id="header-notice" />
+      <!-- 退出登陆 & 个人中心 -->
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link navbar-bg-hover select-none">
+          <img :src="userAvatar" :style="avatarsStyle" />
+          <p v-if="username" class="dark:text-white">{{ username }}</p>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu class="logout">
+            <el-dropdown-item @click="toAccountSettings">
+              <IconifyIconOffline
+                :icon="AccountSettingsIcon"
+                style="margin: 5px"
+              />
+              {{ t("buttons.pureAccountSettings") }}
+            </el-dropdown-item>
+            <el-dropdown-item @click="logout">
+              <IconifyIconOffline
+                :icon="LogoutCircleRLine"
+                style="margin: 5px"
+              />
+              {{ t("buttons.pureLoginOut") }}
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </div>
   </div>
 </template>
