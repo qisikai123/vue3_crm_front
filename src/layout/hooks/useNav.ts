@@ -12,6 +12,7 @@ import Avatar from "@/assets/user.jpeg";
 import { useFullscreen } from "@vueuse/core";
 import ExitFullscreen from "~icons/ri/fullscreen-exit-fill";
 import Fullscreen from "~icons/ri/fullscreen-fill";
+import { getTopMenu } from "@/router/utils";
 
 export const useNav = () => {
   const { wholeMenus } = storeToRefs(usePermissionStoreHook());
@@ -120,6 +121,23 @@ export const useNav = () => {
   // 全屏
   const { toggle, isFullscreen } = useFullscreen();
 
+  const errorInfo =
+    "The current routing configuration is incorrect, please check the configuration";
+  function resolvePath(route) {
+    if (!route.children) return console.error(errorInfo);
+    const httpReg = /^http(s?):\/\//;
+    const routeChildPath = route.children[0]?.path;
+    if (httpReg.test(routeChildPath)) {
+      return route.path + "/" + routeChildPath;
+    } else {
+      return routeChildPath;
+    }
+  }
+
+  function backTopMenu() {
+    router.push(getTopMenu()?.path);
+  }
+
   return {
     $storage,
     handleResize,
@@ -144,6 +162,8 @@ export const useNav = () => {
     toggle,
     isFullscreen,
     ExitFullscreen,
-    Fullscreen
+    Fullscreen,
+    resolvePath,
+    backTopMenu
   };
 };

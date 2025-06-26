@@ -13,7 +13,10 @@ import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vu
 import LayNotice from "../lay-notice/index.vue";
 import AccountSettingsIcon from "~icons/ri/user-settings-line";
 import LogoutCircleRLine from "~icons/ri/logout-circle-r-line";
+import Setting from "~icons/ri/settings-3-line";
+
 import { useI18n } from "vue-i18n";
+import LayNavMix from "../lay-sidebar/NavMix.vue";
 
 const { t } = useI18n();
 
@@ -45,6 +48,8 @@ const {
       v-if="layout !== 'mix' && device !== 'mobile'"
       class="breadcrumb-container"
     />
+
+    <LayNavMix v-if="layout === 'mix'" />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
       <!-- 搜索 -->
@@ -80,6 +85,13 @@ const {
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+      <span
+        class="set-icon navbar-bg-hover"
+        :title="t('buttons.pureOpenSystemSet')"
+        @click="onPanel"
+      >
+        <IconifyIconOffline :icon="Setting" />
+      </span>
     </div>
   </div>
 </template>

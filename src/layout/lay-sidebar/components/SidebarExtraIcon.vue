@@ -1,13 +1,19 @@
+<script lang="ts">
+export default {
+  name: "SidebarExtraIcon"
+};
+</script>
+
 <script setup lang="ts">
-import { toRaw, defineProps } from 'vue'
-import { useRenderIcon } from '@/components/ReIcon/src/hooks'
+import { toRaw, defineProps } from "vue";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 
 defineProps({
   extraIcon: {
     type: String,
-    default: '',
-  },
-})
+    default: ""
+  }
+});
 </script>
 
 <template>

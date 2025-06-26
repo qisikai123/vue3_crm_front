@@ -12,7 +12,7 @@ export default defineFakeRoute([
           data: {
             avatar: "",
             username: "admin",
-            nickname: "小铭",
+            nickname: "超级管理员",
             // 一个用户可能有多个角色
             roles: ["admin"],
             // 按钮级别权限
