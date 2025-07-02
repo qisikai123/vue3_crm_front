@@ -1,120 +1,217 @@
-<script lang="ts">
-export default {
-  name: "LayTag"
-};
-</script>
-
-<script lang="ts" setup>
-import { useTags } from "../hooks/useTag";
-import {
-  ref,
-  onBeforeUnmount,
-  toRaw,
-  nextTick,
-  getCurrentInstance,
-  onMounted,
-  unref
-} from "vue";
-import { useRouter, useRoute } from "vue-router";
+<script setup lang="ts">
+import { $t } from "@/plugins/i18n";
 import { emitter } from "@/utils/mitt";
-import { transformI18n } from "@/plugins/i18n";
-import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { RouteConfigs } from "../types";
+import { useTags } from "../hooks/useTag";
 import { routerArrays } from "@/layout/types";
-import { usePermissionStoreHook } from "@/store/modules/permission";
+import { onClickOutside } from "@vueuse/core";
+import TagChrome from "./components/TagChrome.vue";
 import { handleAliveRoute, getTopMenu } from "@/router/utils";
+import { useSettingStoreHook } from "@/store/modules/settings";
+import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
+import { usePermissionStoreHook } from "@/store/modules/permission";
+import { ref, watch, unref, toRaw, nextTick, onBeforeUnmount } from "vue";
 import {
   delay,
   isEqual,
   isAllEmpty,
   useResizeObserver
 } from "@pureadmin/utils";
-import { useSettingStoreHook } from "@/store/modules/settings";
-import { RouteConfigs } from "../types";
-import { $t } from "@/plugins/i18n";
 
 import ExitFullscreen from "~icons/ri/fullscreen-exit-fill";
 import Fullscreen from "~icons/ri/fullscreen-fill";
-import ArrowLeftSLine from "~icons/ri/arrow-left-s-line";
-import ArrowRightSLine from "~icons/ri/arrow-right-s-line";
 import ArrowDown from "~icons/ri/arrow-down-s-line";
-
-const router = useRouter();
-const route = useRoute();
-const instance = getCurrentInstance();
-
-const VITE_HIDE_HOME = import.meta.env.VITE_HIDE_HOME;
+import ArrowRightSLine from "~icons/ri/arrow-right-s-line";
+import ArrowLeftSLine from "~icons/ri/arrow-left-s-line";
 
 const {
+  Close,
+  route,
+  router,
+  visible,
   showTags,
-  showModel,
+  instance,
   multiTags,
-  getTabStyle,
-  linkIsActive,
+  tagsViews,
+  buttonTop,
+  buttonLeft,
+  showModel,
+  translateX,
   isFixedTag,
+  pureSetting,
+  activeIndex,
+  getTabStyle,
+  isScrolling,
+  iconIsActive,
+  linkIsActive,
+  currentSelect,
+  scheduleIsActive,
+  getContextMenuStyle,
+  closeMenu,
+  onMounted,
   onMouseenter,
   onMouseleave,
-  Close,
-  iconIsActive,
-  activeIndex,
-  translateX,
-  scheduleIsActive,
-  tagsViews,
-  isScrolling,
-  closeMenu,
-  currentSelect,
-  buttonLeft,
-  buttonTop,
-  visible,
-  onContentFullScreen,
-  pureSetting,
-  getContextMenuStyle
+  transformI18n,
+  onContentFullScreen
 } = useTags();
 
+const tabDom = ref();
+const containerDom = ref();
+const scrollbarDom = ref();
+const contextmenuRef = ref();
+const isShowArrow = ref(false);
+const topPath = getTopMenu()?.path;
+const { VITE_HIDE_HOME } = import.meta.env;
 const fixedTags = [
   ...routerArrays,
   ...usePermissionStoreHook().flatteningRoutes.filter(v => v?.meta?.fixedTag)
 ];
 
-const containerDom = ref();
-const scrollbarDom = ref();
-const tabDom = ref();
-const isShowArrow = ref(false);
-const topPath = getTopMenu()?.path;
-
-/**
- * tags标签点击
- * @param item 当前标签
- */
-function tagOnClick(item) {
-  const { name, path } = item;
-  if (name) {
-    if (item.query) {
-      router.push({
-        name,
-        query: item.query
-      });
-    } else if (item.params) {
-      router.push({
-        name,
-        params: item.params
-      });
+const dynamicTagView = async () => {
+  await nextTick();
+  const index = multiTags.value.findIndex(item => {
+    if (!isAllEmpty(route.query)) {
+      return isEqual(route.query, item.query);
+    } else if (!isAllEmpty(route.params)) {
+      return isEqual(route.params, item.params);
     } else {
-      router.push({ name });
+      return route.path === item.path;
     }
+  });
+  moveToView(index);
+};
+
+const moveToView = async (index: number): Promise<void> => {
+  await nextTick();
+  const tabNavPadding = 10;
+  if (!instance.refs["dynamic" + index]) return;
+  const tabItemEl = instance.refs["dynamic" + index][0];
+  const tabItemElOffsetLeft = (tabItemEl as HTMLElement)?.offsetLeft;
+  const tabItemOffsetWidth = (tabItemEl as HTMLElement)?.offsetWidth;
+  // 标签页导航栏可视长度（不包含溢出部分）
+  const scrollbarDomWidth = scrollbarDom.value
+    ? scrollbarDom.value?.offsetWidth
+    : 0;
+
+  // 已有标签页总长度（包含溢出部分）
+  const tabDomWidth = tabDom.value ? tabDom.value?.offsetWidth : 0;
+
+  scrollbarDomWidth <= tabDomWidth
+    ? (isShowArrow.value = true)
+    : (isShowArrow.value = false);
+  if (tabDomWidth < scrollbarDomWidth || tabItemElOffsetLeft === 0) {
+    translateX.value = 0;
+  } else if (tabItemElOffsetLeft < -translateX.value) {
+    // 标签在可视区域左侧
+    translateX.value = -tabItemElOffsetLeft + tabNavPadding;
+  } else if (
+    tabItemElOffsetLeft > -translateX.value &&
+    tabItemElOffsetLeft + tabItemOffsetWidth <
+      -translateX.value + scrollbarDomWidth
+  ) {
+    // 标签在可视区域
+    translateX.value = Math.min(
+      0,
+      scrollbarDomWidth -
+        tabItemOffsetWidth -
+        tabItemElOffsetLeft -
+        tabNavPadding
+    );
   } else {
-    router.push({ path });
+    // 标签在可视区域右侧
+    translateX.value = -(
+      tabItemElOffsetLeft -
+      (scrollbarDomWidth - tabNavPadding - tabItemOffsetWidth)
+    );
   }
-  emitter.emit("tagOnClick", item);
+};
+
+const handleScroll = (offset: number): void => {
+  const scrollbarDomWidth = scrollbarDom.value
+    ? scrollbarDom.value?.offsetWidth
+    : 0;
+  const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0;
+  if (offset > 0) {
+    translateX.value = Math.min(0, translateX.value + offset);
+  } else {
+    if (scrollbarDomWidth < tabDomWidth) {
+      if (translateX.value >= -(tabDomWidth - scrollbarDomWidth)) {
+        translateX.value = Math.max(
+          translateX.value + offset,
+          scrollbarDomWidth - tabDomWidth
+        );
+      }
+    } else {
+      translateX.value = 0;
+    }
+  }
+  isScrolling.value = false;
+};
+
+const handleWheel = (event: WheelEvent): void => {
+  isScrolling.value = true;
+  const scrollIntensity = Math.abs(event.deltaX) + Math.abs(event.deltaY);
+  let offset = 0;
+  if (event.deltaX < 0) {
+    offset = scrollIntensity > 0 ? scrollIntensity : 100;
+  } else {
+    offset = scrollIntensity > 0 ? -scrollIntensity : -100;
+  }
+
+  smoothScroll(offset);
+};
+
+const smoothScroll = (offset: number): void => {
+  // 每帧滚动的距离
+  const scrollAmount = 20;
+  let remaining = Math.abs(offset);
+
+  const scrollStep = () => {
+    const scrollOffset = Math.sign(offset) * Math.min(scrollAmount, remaining);
+    handleScroll(scrollOffset);
+    remaining -= Math.abs(scrollOffset);
+
+    if (remaining > 0) {
+      requestAnimationFrame(scrollStep);
+    }
+  };
+
+  requestAnimationFrame(scrollStep);
+};
+
+function dynamicRouteTag(value: string): void {
+  const hasValue = multiTags.value.some(item => {
+    return item.path === value;
+  });
+
+  function concatPath(arr: object[], value: string) {
+    if (!hasValue) {
+      arr.forEach((arrItem: any) => {
+        if (arrItem.path === value) {
+          useMultiTagsStoreHook().handleTags("push", {
+            path: value,
+            meta: arrItem.meta,
+            name: arrItem.name
+          });
+        } else {
+          if (arrItem.children && arrItem.children.length > 0) {
+            concatPath(arrItem.children, value);
+          }
+        }
+      });
+    }
+  }
+  concatPath(router.options.routes as any, value);
 }
 
-/**
- * 删除标签页
- * @param item 当前标签
- * @param tag
- */
-function deleteMenu(item, tag?: string) {
-  deleteDynamicTag(item, item.path, tag);
-  handleAliveRoute(route as ToRouteType);
+/** 刷新路由 */
+function onFresh() {
+  const { fullPath, query } = unref(route);
+  router.replace({
+    path: "/redirect" + fullPath,
+    query
+  });
+  handleAliveRoute(route as ToRouteType, "refresh");
 }
 
 function deleteDynamicTag(obj: any, current: any, tag?: string) {
@@ -188,64 +285,104 @@ function deleteDynamicTag(obj: any, current: any, tag?: string) {
   }
 }
 
-const dynamicTagView = async () => {
-  await nextTick();
-  const index = multiTags.value.findIndex(item => {
-    if (!isAllEmpty(route.query)) {
-      return isEqual(route.query, item.query);
-    } else if (!isAllEmpty(route.params)) {
-      return isEqual(route.params, item.params);
-    } else {
-      return route.path === item.path;
-    }
-  });
-  moveToView(index);
-};
+function deleteMenu(item, tag?: string) {
+  deleteDynamicTag(item, item.path, tag);
+  handleAliveRoute(route as ToRouteType);
+}
 
-const moveToView = async (index: number): Promise<void> => {
-  await nextTick();
-  const tabNavPadding = 10;
-  if (!instance.refs["dynamic" + index]) return;
-  const tabItemEl = instance.refs["dynamic" + index][0];
-  const tabItemElOffsetLeft = (tabItemEl as HTMLElement)?.offsetLeft;
-  const tabItemOffsetWidth = (tabItemEl as HTMLElement)?.offsetWidth;
-  // 标签页导航栏可视长度（不包含溢出部分）
-  const scrollbarDomWidth = scrollbarDom.value
-    ? scrollbarDom.value?.offsetWidth
-    : 0;
+function onClickDrop(key, item, selectRoute?: RouteConfigs) {
+  if (item && item.disabled) return;
 
-  // 已有标签页总长度（包含溢出部分）
-  const tabDomWidth = tabDom.value ? tabDom.value?.offsetWidth : 0;
-
-  scrollbarDomWidth <= tabDomWidth
-    ? (isShowArrow.value = true)
-    : (isShowArrow.value = false);
-  if (tabDomWidth < scrollbarDomWidth || tabItemElOffsetLeft === 0) {
-    translateX.value = 0;
-  } else if (tabItemElOffsetLeft < -translateX.value) {
-    // 标签在可视区域左侧
-    translateX.value = -tabItemElOffsetLeft + tabNavPadding;
-  } else if (
-    tabItemElOffsetLeft > -translateX.value &&
-    tabItemElOffsetLeft + tabItemOffsetWidth <
-      -translateX.value + scrollbarDomWidth
-  ) {
-    // 标签在可视区域
-    translateX.value = Math.min(
-      0,
-      scrollbarDomWidth -
-        tabItemOffsetWidth -
-        tabItemElOffsetLeft -
-        tabNavPadding
-    );
+  let selectTagRoute;
+  if (selectRoute) {
+    selectTagRoute = {
+      path: selectRoute.path,
+      meta: selectRoute.meta,
+      name: selectRoute.name,
+      query: selectRoute?.query,
+      params: selectRoute?.params
+    };
   } else {
-    // 标签在可视区域右侧
-    translateX.value = -(
-      tabItemElOffsetLeft -
-      (scrollbarDomWidth - tabNavPadding - tabItemOffsetWidth)
-    );
+    selectTagRoute = { path: route.path, meta: route.meta };
   }
-};
+
+  // 当前路由信息
+  switch (key) {
+    case 0:
+      // 刷新路由
+      onFresh();
+      break;
+    case 1:
+      // 关闭当前标签页
+      deleteMenu(selectTagRoute);
+      break;
+    case 2:
+      // 关闭左侧标签页
+      deleteMenu(selectTagRoute, "left");
+      break;
+    case 3:
+      // 关闭右侧标签页
+      deleteMenu(selectTagRoute, "right");
+      break;
+    case 4:
+      // 关闭其他标签页
+      deleteMenu(selectTagRoute, "other");
+      break;
+    case 5:
+      // 关闭全部标签页
+      useMultiTagsStoreHook().handleTags("splice", "", {
+        startIndex: fixedTags.length,
+        length: multiTags.value.length
+      });
+      router.push(topPath);
+      // router.push(fixedTags[fixedTags.length - 1]?.path);
+      handleAliveRoute(route as ToRouteType);
+      break;
+    case 6:
+      // 内容区全屏
+      onContentFullScreen();
+      setTimeout(() => {
+        if (pureSetting.hiddenSideBar) {
+          tagsViews[6].icon = ExitFullscreen;
+          tagsViews[6].text = $t("buttons.pureContentExitFullScreen");
+        } else {
+          tagsViews[6].icon = Fullscreen;
+          tagsViews[6].text = $t("buttons.pureContentFullScreen");
+        }
+      }, 100);
+      break;
+  }
+  setTimeout(() => {
+    showMenuModel(route.fullPath, route.query);
+  });
+}
+
+function handleCommand(command: any) {
+  const { key, item } = command;
+  onClickDrop(key, item);
+}
+
+/** 触发右键中菜单的点击事件 */
+function selectTag(key, item) {
+  closeMenu();
+  onClickDrop(key, item, currentSelect.value);
+}
+
+function showMenus(value: boolean) {
+  Array.of(1, 2, 3, 4, 5).forEach(v => {
+    tagsViews[v].show = value;
+  });
+}
+
+function disabledMenus(value: boolean, fixedTag = false) {
+  Array.of(1, 2, 3, 4, 5).forEach(v => {
+    tagsViews[v].disabled = value;
+  });
+  if (fixedTag) {
+    tagsViews[2].show = false;
+    tagsViews[2].disabled = true;
+  }
+}
 
 /** 检查当前右键的菜单两边是否存在别的菜单，如果左侧的菜单是顶级菜单，则不显示关闭左侧标签页，如果右侧没有菜单，则不显示关闭右侧标签页 */
 function showMenuModel(
@@ -316,100 +453,6 @@ function showMenuModel(
   }
 }
 
-function disabledMenus(value: boolean, fixedTag = false) {
-  Array.of(1, 2, 3, 4, 5).forEach(v => {
-    tagsViews[v].disabled = value;
-  });
-  if (fixedTag) {
-    tagsViews[2].show = false;
-    tagsViews[2].disabled = true;
-  }
-}
-
-function showMenus(value: boolean) {
-  Array.of(1, 2, 3, 4, 5).forEach(v => {
-    tagsViews[v].show = value;
-  });
-}
-
-function dynamicRouteTag(value: string): void {
-  const hasValue = multiTags.value.some(item => {
-    return item.path === value;
-  });
-
-  function concatPath(arr: object[], value: string) {
-    if (!hasValue) {
-      arr.forEach((arrItem: any) => {
-        if (arrItem.path === value) {
-          useMultiTagsStoreHook().handleTags("push", {
-            path: value,
-            meta: arrItem.meta,
-            name: arrItem.name
-          });
-        } else {
-          if (arrItem.children && arrItem.children.length > 0) {
-            concatPath(arrItem.children, value);
-          }
-        }
-      });
-    }
-  }
-  concatPath(router.options.routes as any, value);
-}
-
-const handleScroll = (offset: number): void => {
-  const scrollbarDomWidth = scrollbarDom.value
-    ? scrollbarDom.value?.offsetWidth
-    : 0;
-  const tabDomWidth = tabDom.value ? tabDom.value.offsetWidth : 0;
-  if (offset > 0) {
-    translateX.value = Math.min(0, translateX.value + offset);
-  } else {
-    if (scrollbarDomWidth < tabDomWidth) {
-      if (translateX.value >= -(tabDomWidth - scrollbarDomWidth)) {
-        translateX.value = Math.max(
-          translateX.value + offset,
-          scrollbarDomWidth - tabDomWidth
-        );
-      }
-    } else {
-      translateX.value = 0;
-    }
-  }
-  isScrolling.value = false;
-};
-
-const handleWheel = (event: WheelEvent): void => {
-  isScrolling.value = true;
-  const scrollIntensity = Math.abs(event.deltaX) + Math.abs(event.deltaY);
-  let offset = 0;
-  if (event.deltaX < 0) {
-    offset = scrollIntensity > 0 ? scrollIntensity : 100;
-  } else {
-    offset = scrollIntensity > 0 ? -scrollIntensity : -100;
-  }
-
-  smoothScroll(offset);
-};
-
-const smoothScroll = (offset: number): void => {
-  // 每帧滚动的距离
-  const scrollAmount = 20;
-  let remaining = Math.abs(offset);
-
-  const scrollStep = () => {
-    const scrollOffset = Math.sign(offset) * Math.min(scrollAmount, remaining);
-    handleScroll(scrollOffset);
-    remaining -= Math.abs(scrollOffset);
-
-    if (remaining > 0) {
-      requestAnimationFrame(scrollStep);
-    }
-  };
-
-  requestAnimationFrame(scrollStep);
-};
-
 function openMenu(tag, e) {
   closeMenu();
   if (tag.path === topPath || tag?.meta?.fixedTag) {
@@ -448,100 +491,36 @@ function openMenu(tag, e) {
   });
 }
 
-/** 触发右键中菜单的点击事件 */
-function selectTag(key, item) {
-  closeMenu();
-  onClickDrop(key, item, currentSelect.value);
-}
-
-function onClickDrop(key, item, selectRoute?: RouteConfigs) {
-  if (item && item.disabled) return;
-
-  let selectTagRoute;
-  if (selectRoute) {
-    selectTagRoute = {
-      path: selectRoute.path,
-      meta: selectRoute.meta,
-      name: selectRoute.name,
-      query: selectRoute?.query,
-      params: selectRoute?.params
-    };
-  } else {
-    selectTagRoute = { path: route.path, meta: route.meta };
-  }
-
-  // 当前路由信息
-  switch (key) {
-    case 0:
-      // 刷新路由
-      onFresh();
-      break;
-    case 1:
-      // 关闭当前标签页
-      deleteMenu(selectTagRoute);
-      break;
-    case 2:
-      // 关闭左侧标签页
-      deleteMenu(selectTagRoute, "left");
-      break;
-    case 3:
-      // 关闭右侧标签页
-      deleteMenu(selectTagRoute, "right");
-      break;
-    case 4:
-      // 关闭其他标签页
-      deleteMenu(selectTagRoute, "other");
-      break;
-    case 5:
-      // 关闭全部标签页
-      useMultiTagsStoreHook().handleTags("splice", "", {
-        startIndex: fixedTags.length,
-        length: multiTags.value.length
+/** 触发tags标签切换 */
+function tagOnClick(item) {
+  const { name, path } = item;
+  if (name) {
+    if (item.query) {
+      router.push({
+        name,
+        query: item.query
       });
-      router.push(topPath);
-      // router.push(fixedTags[fixedTags.length - 1]?.path);
-      handleAliveRoute(route as ToRouteType);
-      break;
-    case 6:
-      // 内容区全屏
-      onContentFullScreen();
-      setTimeout(() => {
-        if (pureSetting.hiddenSideBar) {
-          tagsViews[6].icon = ExitFullscreen;
-          tagsViews[6].text = $t("buttons.pureContentExitFullScreen");
-        } else {
-          tagsViews[6].icon = Fullscreen;
-          tagsViews[6].text = $t("buttons.pureContentFullScreen");
-        }
-      }, 100);
-      break;
+    } else if (item.params) {
+      router.push({
+        name,
+        params: item.params
+      });
+    } else {
+      router.push({ name });
+    }
+  } else {
+    router.push({ path });
   }
-  setTimeout(() => {
-    showMenuModel(route.fullPath, route.query);
-  });
+  emitter.emit("tagOnClick", item);
 }
 
-/** 刷新路由 */
-function onFresh() {
-  const { fullPath, query } = unref(route);
-  router.replace({
-    path: "/redirect" + fullPath,
-    query
-  });
-  handleAliveRoute(route as ToRouteType, "refresh");
-}
+onClickOutside(contextmenuRef, closeMenu, {
+  detectIframe: true
+});
 
-function handleCommand(command: any) {
-  const { key, item } = command;
-  onClickDrop(key, item);
-}
-
-onBeforeUnmount(() => {
-  // 解绑`tagViewsChange`、`tagViewsShowModel`、`changLayoutRoute`公共事件，防止多次触发
-  emitter.off("tagViewsChange");
-  emitter.off("tagViewsShowModel");
-  emitter.off("changLayoutRoute");
-  emitter.off("tagOnClick");
+watch(route, () => {
+  activeIndex.value = -1;
+  dynamicTagView();
 });
 
 onMounted(() => {
@@ -572,6 +551,13 @@ onMounted(() => {
   useResizeObserver(scrollbarDom, dynamicTagView);
   delay().then(() => dynamicTagView());
 });
+
+onBeforeUnmount(() => {
+  // 解绑`tagViewsChange`、`tagViewsShowModel`、`changLayoutRoute`公共事件，防止多次触发
+  emitter.off("tagViewsChange");
+  emitter.off("tagViewsShowModel");
+  emitter.off("changLayoutRoute");
+});
 </script>
 
 <template>
@@ -579,7 +565,6 @@ onMounted(() => {
     <span v-show="isShowArrow" class="arrow-left">
       <IconifyIconOffline :icon="ArrowLeftSLine" @click="handleScroll(200)" />
     </span>
-
     <div
       ref="scrollbarDom"
       class="scroll-container"
@@ -597,10 +582,10 @@ onMounted(() => {
             showModel === 'chrome' && 'chrome-item',
             isFixedTag(item) && 'fixed-tag'
           ]"
+          @contextmenu.prevent="openMenu(item, $event)"
           @mouseenter.prevent="onMouseenter(index)"
           @mouseleave.prevent="onMouseleave(index)"
           @click="tagOnClick(item)"
-          @contextmenu.prevent="openMenu(item, $event)"
         >
           <template v-if="showModel !== 'chrome'">
             <span
@@ -626,6 +611,22 @@ onMounted(() => {
               :class="[scheduleIsActive(item)]"
             />
           </template>
+          <div v-else class="chrome-tab">
+            <div class="chrome-tab__bg">
+              <TagChrome />
+            </div>
+            <span class="tag-title">
+              {{ transformI18n(item.meta.title) }}
+            </span>
+            <span
+              v-if="isFixedTag(item) ? false : index !== 0"
+              class="chrome-close-btn"
+              @click.stop="deleteMenu(item)"
+            >
+              <IconifyIconOffline :icon="Close" />
+            </span>
+            <span class="chrome-tab-divider" />
+          </div>
         </div>
       </div>
     </div>

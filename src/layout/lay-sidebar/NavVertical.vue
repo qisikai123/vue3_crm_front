@@ -4,7 +4,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onMounted, onBeforeUnmount } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { storageLocal, isAllEmpty } from "@pureadmin/utils";
@@ -15,6 +15,7 @@ import LaySidebarItem from "./components/SidebarItem.vue";
 import LaySidebarCenterCollapse from "./components/SidebarCenterCollapse.vue";
 import LaySidebarLeftCollapse from "./components/SidebarLeftCollapse.vue";
 import { findRouteByPath, getParentPaths } from "@/router/utils";
+import { emitter } from "@/utils/mitt";
 
 const route = useRoute();
 const {
@@ -74,6 +75,19 @@ function getSubMenuData() {
   if (!parenetRoute?.children) return;
   subMenuData.value = parenetRoute?.children;
 }
+
+onMounted(() => {
+  getSubMenuData();
+
+  emitter.on("logoChange", key => {
+    showLogo.value = key;
+  });
+});
+
+onBeforeUnmount(() => {
+  // 解绑`logoChange`公共事件，防止多次触发
+  emitter.off("logoChange");
+});
 </script>
 <template>
   <div

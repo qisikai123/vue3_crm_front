@@ -6,18 +6,22 @@ export default {
 
 <script lang="ts" setup>
 import LayPanel from "../lay-panel/index.vue";
-import { computed } from "vue";
+import { computed, reactive, ref, unref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import Segmented, { type OptionsType } from "@/components/ReSegmented";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
 import { useDark, useGlobal, debounce, isNumber } from "@pureadmin/utils";
 import { useAppStoreHook } from "@/store/modules/app";
 import { useNav } from "@/layout/hooks/useNav";
+import { emitter } from "@/utils/mitt";
+import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 
 import DayIcon from "@/assets/svg/day.svg?component";
 import DarkIcon from "@/assets/svg/dark.svg?component";
 import SystemIcon from "@/assets/svg/system.svg?component";
 import Check from "~icons/ep/check";
+import LeftArrow from "~icons/ri/arrow-left-s-line?width=20&height=20";
+import RightArrow from "~icons/ri/arrow-right-s-line?width=20&height=20";
 
 const { isDark } = useDark();
 
@@ -38,6 +42,25 @@ const {
 const { t } = useI18n();
 
 const mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+
+const settings = reactive({
+  greyVal: $storage.configure.grey,
+  weakVal: $storage.configure.weak,
+  tabsVal: $storage.configure.hideTabs,
+  showLogo: $storage.configure.showLogo,
+  showModel: $storage.configure.showModel,
+  hideFooter: $storage.configure.hideFooter,
+  multiTagsCache: $storage.configure.multiTagsCache,
+  stretch: $storage.configure.stretch
+});
+
+/** 默认灵动模式 */
+const markValue = ref($storage.configure?.showModel ?? "smart");
+const logoVal = ref($storage.configure?.showLogo ?? true);
+
+const mixRef = ref();
+const verticalRef = ref();
+const horizontalRef = ref();
 
 const pClass = computed(() => {
   return ["mb-[12px]!", "font-medium", "text-sm", "dark:text-white"];
@@ -123,6 +146,68 @@ const getThemeColor = computed(() => {
   };
 });
 
+/** 页宽 */
+const stretchTypeOptions = computed<Array<OptionsType>>(() => {
+  return [
+    {
+      label: t("panel.pureStretchFixed"),
+      tip: t("panel.pureStretchFixedTip"),
+      value: "fixed"
+    },
+    {
+      label: t("panel.pureStretchCustom"),
+      tip: t("panel.pureStretchCustomTip"),
+      value: "custom"
+    }
+  ];
+});
+
+const markOptions = computed<Array<OptionsType>>(() => {
+  return [
+    {
+      label: t("panel.pureTagsStyleSmart"),
+      tip: t("panel.pureTagsStyleSmartTip"),
+      value: "smart"
+    },
+    {
+      label: t("panel.pureTagsStyleCard"),
+      tip: t("panel.pureTagsStyleCardTip"),
+      value: "card"
+    },
+    {
+      label: t("panel.pureTagsStyleChrome"),
+      tip: t("panel.pureTagsStyleChromeTip"),
+      value: "chrome"
+    }
+  ];
+});
+
+watch($storage, ({ layout }) => {
+  switch (layout["layout"]) {
+    case "vertical":
+      toggleClass(true, "is-select", unref(verticalRef));
+      debounce(setFalse([horizontalRef]), 50);
+      debounce(setFalse([mixRef]), 50);
+      break;
+    case "horizontal":
+      toggleClass(true, "is-select", unref(horizontalRef));
+      debounce(setFalse([verticalRef]), 50);
+      debounce(setFalse([mixRef]), 50);
+      break;
+    case "mix":
+      toggleClass(true, "is-select", unref(mixRef));
+      debounce(setFalse([verticalRef]), 50);
+      debounce(setFalse([horizontalRef]), 50);
+      break;
+  }
+});
+
+function setFalse(Doms): any {
+  Doms.forEach(v => {
+    toggleClass(false, "is-select", unref(v));
+  });
+}
+
 /** 设置导航模式 */
 function setLayoutModel(layout: string) {
   layoutTheme.value.layout = layout;
@@ -137,6 +222,72 @@ function setLayoutModel(layout: string) {
     overallStyle: $storage.layout?.overallStyle
   };
   useAppStoreHook().setLayout(layout);
+}
+
+const setStretch = value => {
+  settings.stretch = value;
+  storageConfigureChange("stretch", value);
+};
+
+const stretchTypeChange = ({ option }) => {
+  const { value } = option;
+  value === "custom" ? setStretch(1440) : setStretch(false);
+};
+
+function storageConfigureChange<T>(key: string, val: T): void {
+  const storageConfigure = $storage.configure;
+  storageConfigure[key] = val;
+  $storage.configure = storageConfigure;
+}
+
+/** 多标签页风格切换 */
+function onChange({ option }) {
+  const { value } = option;
+  markValue.value = value;
+  storageConfigureChange("showModel", value);
+  emitter.emit("tagViewsShowModel", value);
+}
+
+/** 灰色模式设置 */
+const greyChange = (value): void => {
+  const htmlEl = document.querySelector("html");
+  toggleClass(settings.greyVal, "html-grey", htmlEl);
+  storageConfigureChange("grey", value);
+};
+
+/** 色弱模式设置 */
+const weekChange = (value): void => {
+  const htmlEl = document.querySelector("html");
+  toggleClass(settings.weakVal, "html-weakness", htmlEl);
+  storageConfigureChange("weak", value);
+};
+
+/** 隐藏标签页设置 */
+const tagsChange = () => {
+  const showVal = settings.tabsVal;
+  storageConfigureChange("hideTabs", showVal);
+  emitter.emit("tagViewsChange", showVal as unknown as string);
+};
+
+/** 隐藏页脚设置 */
+const hideFooterChange = () => {
+  const hideFooter = settings.hideFooter;
+  storageConfigureChange("hideFooter", hideFooter);
+};
+
+/** 标签页持久化设置 */
+const multiTagsCacheChange = () => {
+  const multiTagsCache = settings.multiTagsCache;
+  storageConfigureChange("multiTagsCache", multiTagsCache);
+  useMultiTagsStoreHook().multiTagsCacheChange(multiTagsCache);
+};
+
+/** 侧边栏Logo */
+function logoChange() {
+  unref(logoVal)
+    ? storageConfigureChange("showLogo", true)
+    : storageConfigureChange("showLogo", false);
+  emitter.emit("logoChange", unref(logoVal));
 }
 </script>
 
@@ -222,6 +373,130 @@ function setLayoutModel(layout: string) {
         >
           <div />
           <div />
+        </li>
+      </ul>
+
+      <!-- 设置内容区宽度 -->
+      <span v-if="useAppStoreHook().getViewportWidth > 1280">
+        <p :class="['mt-5!', pClass]">{{ t("panel.pureStretch") }}</p>
+        <Segmented
+          resize
+          class="mb-2 select-none"
+          :modelValue="isNumber(settings.stretch) ? 1 : 0"
+          :options="stretchTypeOptions"
+          @change="stretchTypeChange"
+        />
+        <el-input-number
+          v-if="isNumber(settings.stretch)"
+          v-model="settings.stretch as number"
+          :min="1280"
+          :max="1600"
+          controls-position="right"
+          @change="value => setStretch(value)"
+        />
+        <button
+          v-else
+          v-ripple="{ class: 'text-gray-300' }"
+          class="bg-transparent flex-c w-full h-20 rounded-md border border-[var(--pure-border-color)]"
+          @click="setStretch(!settings.stretch)"
+        >
+          <div
+            class="flex-bc transition-all duration-300"
+            :class="[settings.stretch ? 'w-[24%]' : 'w-[50%]']"
+            style="color: var(--el-color-primary)"
+          >
+            <IconifyIconOffline
+              :icon="settings.stretch ? RightArrow : LeftArrow"
+            />
+            <div
+              class="grow border-0 border-b border-dashed"
+              style="border-color: var(--el-color-primary)"
+            />
+            <IconifyIconOffline
+              :icon="settings.stretch ? LeftArrow : RightArrow"
+            />
+          </div>
+        </button>
+      </span>
+
+      <!-- 多标签页风格 -->
+      <p :class="['mt-4!', pClass]">{{ t("panel.pureTagsStyle") }}</p>
+      <Segmented
+        resize
+        class="select-none"
+        :modelValue="markValue === 'smart' ? 0 : markValue === 'card' ? 1 : 2"
+        :options="markOptions"
+        @change="onChange"
+      />
+
+      <!-- 界面显示 -->
+      <p class="mt-5! font-medium text-sm dark:text-white">
+        {{ t("panel.pureInterfaceDisplay") }}
+      </p>
+      <ul class="setting">
+        <li>
+          <span class="dark:text-white">{{ t("panel.pureGreyModel") }}</span>
+          <el-switch
+            v-model="settings.greyVal"
+            inline-prompt
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="greyChange"
+          />
+        </li>
+        <li>
+          <span class="dark:text-white">{{ t("panel.pureWeakModel") }}</span>
+          <el-switch
+            v-model="settings.weakVal"
+            inline-prompt
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="weekChange"
+          />
+        </li>
+        <li>
+          <span class="dark:text-white">{{ t("panel.pureHiddenTags") }}</span>
+          <el-switch
+            v-model="settings.tabsVal"
+            inline-prompt
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="tagsChange"
+          />
+        </li>
+        <li>
+          <span class="dark:text-white">{{ t("panel.pureHiddenFooter") }}</span>
+          <el-switch
+            v-model="settings.hideFooter"
+            inline-prompt
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="hideFooterChange"
+          />
+        </li>
+        <li>
+          <span class="dark:text-white">Logo</span>
+          <el-switch
+            v-model="logoVal"
+            inline-prompt
+            :active-value="true"
+            :inactive-value="false"
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="logoChange"
+          />
+        </li>
+        <li>
+          <span class="dark:text-white">
+            {{ t("panel.pureMultiTagsCache") }}
+          </span>
+          <el-switch
+            v-model="settings.multiTagsCache"
+            inline-prompt
+            :active-text="t('buttons.pureOpenText')"
+            :inactive-text="t('buttons.pureCloseText')"
+            @change="multiTagsCacheChange"
+          />
         </li>
       </ul>
     </div>
