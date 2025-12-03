@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, defineOptions, watch } from "vue";
+import { ref, defineOptions, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { ElMessage } from "element-plus";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
@@ -7,7 +7,6 @@ import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Motion from "./utils/motion";
 import TypeIt from "@/components/ReTypeit/index";
-import { useNav } from "@/layout/hooks/useNav";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ReImageVerify } from "@/components/ReImageVerify/index";
 import { useRouter } from "vue-router";
@@ -30,20 +29,18 @@ defineOptions({
   name: "Login"
 });
 
-let bulletsFlag = ref<number>(1);
-let textGroupStyle = ref<string>("translateY(0)");
 let mainStyle = ref<Boolean>(false);
 let loginForm = ref<{
-  username: string;
+  name: string;
   password: string;
   verifyCode: string;
 }>({
-  username: "admin",
-  password: "admin123",
+  name: "admin",
+  password: "123456",
   verifyCode: ""
 });
-let registerForm = ref<{ username: string; email: string; password: string }>({
-  username: "",
+let registerForm = ref<{ name: string; email: string; password: string }>({
+  name: "",
   email: "",
   password: ""
 });
@@ -53,16 +50,11 @@ watch(imgCode, value => {
   useUserStoreHook().SET_VERIFYCODE(value);
 });
 
-const bulletsClick = (data: number): void => {
-  textGroupStyle.value = `translateY(${-(data - 1) * 2.2}rem)`;
-  bulletsFlag.value = data;
-};
-
 const loading = ref<boolean>(false);
 
 const handleLogin = () => {
   // 表单验证
-  if (!loginForm.value.username) {
+  if (!loginForm.value.name) {
     ElMessage.error(t("login.usernameEmpty"));
     return;
   }
@@ -97,7 +89,7 @@ const handleLogin = () => {
 
 const handleRegister = () => {
   // 表单验证
-  if (!registerForm.value.username) {
+  if (!registerForm.value.name) {
     ElMessage.error(t("login.usernameEmpty"));
     return;
   }
@@ -153,11 +145,11 @@ const handleRegister = () => {
                 <Motion :delay="100">
                   <div class="input-wrap">
                     <input
-                      v-model="loginForm.username"
+                      v-model="loginForm.name"
                       type="text"
                       minlength="4"
                       class="input-field"
-                      :class="loginForm.username ? 'active' : ''"
+                      :class="loginForm.name ? 'active' : ''"
                       autocomplete="off"
                       required
                     />
@@ -235,11 +227,11 @@ const handleRegister = () => {
               <div class="actual-form">
                 <div class="input-wrap">
                   <input
-                    v-model="registerForm.username"
+                    v-model="registerForm.name"
                     type="text"
                     minlength="4"
                     class="input-field"
-                    :class="registerForm.username ? 'active' : ''"
+                    :class="registerForm.name ? 'active' : ''"
                     autocomplete="off"
                     required
                   />
@@ -289,32 +281,7 @@ const handleRegister = () => {
             </form>
           </div>
 
-          <div class="carousel bg-[#f0e3dd] dark:bg-gray-700">
-            <div class="images-wrapper">
-              <!-- <img src="../../assets/vue.svg" class="image img-1 show" alt="" />
-              <img src="../../assets/vue.svg" class="image img-2" alt="" />
-              <img src="../../assets/vue.svg" class="image img-3" alt="" /> -->
-            </div>
-            <div class="text-slider">
-              <div class="text-wrap">
-                <div class="text-group" :style="{ transform: textGroupStyle }">
-                  <h2>{{ t("login.worldBeautiful") }}</h2>
-                  <h2>{{ t("login.hopeYouAlwaysLove") }}</h2>
-                  <h2>{{ t("login.rememberSmile") }}</h2>
-                </div>
-              </div>
-
-              <div class="bullets">
-                <span
-                  v-for="(item, index) in 3"
-                  :key="index"
-                  :class="bulletsFlag == item ? 'active' : ''"
-                  :data-value="item"
-                  @click="bulletsClick(item)"
-                ></span>
-              </div>
-            </div>
-          </div>
+          <div class="carousel"></div>
         </div>
       </div>
     </main>
@@ -525,7 +492,7 @@ const handleRegister = () => {
     position: absolute;
     height: 100%;
     width: 55%;
-    left: 45%;
+    left: 47%;
     top: 0;
     // background-color: #ffe0d2;
     border-radius: 2rem;
@@ -534,6 +501,9 @@ const handleRegister = () => {
     padding-bottom: 2rem;
     overflow: hidden;
     transition: 0.8s ease-in-out;
+    background: url("@/assets/img/loginLogo.png");
+    background-size: cover;
+    background-position: center;
   }
 
   .images-wrapper {
@@ -567,56 +537,6 @@ const handleRegister = () => {
   .image.show {
     opacity: 1;
     transform: none;
-  }
-
-  .text-slider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-
-  .text-wrap {
-    max-height: 2.2rem;
-    overflow: hidden;
-    margin-bottom: 2.5rem;
-  }
-
-  .text-group {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    transform: translateY(0);
-    transition: 0.5s;
-  }
-
-  .text-group h2 {
-    line-height: 2.2rem;
-    font-weight: 600;
-    font-size: 1.6rem;
-  }
-
-  .bullets {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .bullets span {
-    display: block;
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: #aaa;
-    margin: 0 0.25rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .bullets span.active {
-    width: 1.1rem;
-    background-color: #151111;
-    border-radius: 1rem;
   }
 }
 </style>

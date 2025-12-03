@@ -15,9 +15,6 @@ login:
   serviceTerms: Service terms
   and: And
   privacyPolicy: Privacy policy
-  worldBeautiful: The world is always beautiful
-  hopeYouAlwaysLove: Hope you always keep love
-  rememberSmile: Remember smile, remember love, remember optimism
   verifyCode: Verify code
   usernameEmpty: Username cannot be empty
   passwordEmpty: Password cannot be empty

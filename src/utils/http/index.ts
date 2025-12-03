@@ -13,11 +13,13 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { ElMessage } from "element-plus";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
   timeout: 10000,
+  baseURL: "/api",
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
@@ -140,6 +142,19 @@ class PureHttp {
         // 关闭进度条动画
         NProgress.done();
         // 所有的响应异常 区分来源为取消请求/非取消请求
+        if ($error.response.status === 401) {
+          ElMessage.error("登录已过期，请重新登录");
+        } else if ($error.response.status === 403) {
+          ElMessage.error("无权限访问");
+        } else if ($error.response.status === 404) {
+          ElMessage.error("请求不存在");
+        } else if ($error.response.status === 500) {
+          ElMessage.error("服务器错误");
+        } else if ($error.response.status === 502) {
+          ElMessage.error("网关错误");
+        } else {
+          ElMessage.error("请求失败");
+        }
         return Promise.reject($error);
       }
     );

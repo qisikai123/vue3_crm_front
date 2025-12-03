@@ -50,7 +50,6 @@ nextTick(() => {
 
 onMounted(() => {
   emitter.on("logoChange", key => {
-    console.log("logoChange", key);
     showLogo.value = key;
   });
 });
