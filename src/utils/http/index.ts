@@ -14,6 +14,7 @@ import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ElMessage } from "element-plus";
+import { useUserStoreHook } from "@/store/modules/user";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -144,6 +145,7 @@ class PureHttp {
         // 所有的响应异常 区分来源为取消请求/非取消请求
         if ($error.response.status === 401) {
           ElMessage.error("登录已过期，请重新登录");
+          useUserStoreHook().logOut();
         } else if ($error.response.status === 403) {
           ElMessage.error("无权限访问");
         } else if ($error.response.status === 404) {
