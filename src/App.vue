@@ -2,6 +2,7 @@
   <el-config-provider :locale="currentLocale">
     <router-view />
     <ReDialog />
+    <ReDrawer />
   </el-config-provider>
 </template>
 
@@ -13,12 +14,14 @@ import zhCn from "element-plus/es/locale/lang/zh-cn";
 import plusEn from "plus-pro-components/es/locale/lang/en";
 import plusZhCn from "plus-pro-components/es/locale/lang/zh-cn";
 import { ReDialog } from "@/components/ReDialog";
+import { ReDrawer } from "@/components/ReDrawer";
 
 export default defineComponent({
   name: "App",
   components: {
     ElConfigProvider,
-    ReDialog
+    ReDialog,
+    ReDrawer
   },
   computed: {
     currentLocale() {

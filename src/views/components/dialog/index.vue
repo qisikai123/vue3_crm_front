@@ -395,7 +395,7 @@ function onTransitionClick(title, transition) {
         </span>
       </div>
       <el-link
-        href="https://github.com/pure-admin/vue-pure-admin/tree/main/src/views/components/dialog"
+        href="https://github.com/qisikai123/vue3_crm_front/tree/master/src/views/components/dialog"
         target="_blank"
       >
         代码位置 src/views/components/dialog
@@ -464,6 +464,24 @@ function onTransitionClick(title, transition) {
       <el-button @click="onTransitionClick('缩放动画', 'dialog-scale')">
         缩放动画
       </el-button>
+      <el-button @click="onTransitionClick('滑动动画', 'dialog-slide')">
+        滑动动画
+      </el-button>
+      <el-button @click="onTransitionClick('弹跳动画', 'dialog-bounce')">
+        弹跳动画
+      </el-button>
+      <el-button
+        @click="
+          onTransitionClick('自定义动画事件处理器（可配置对象）', {
+            name: 'dialog-custom-object',
+            appear: true,
+            mode: 'out-in',
+            duration: 500
+          })
+        "
+      >
+        自定义动画事件处理器（可配置对象）
+      </el-button>
     </el-space>
   </el-card>
 </template>
@@ -485,5 +503,62 @@ function onTransitionClick(title, transition) {
 .dialog-scale-leave-to .el-dialog {
   opacity: 0;
   transform: scale(0.5);
+}
+
+/* Slide Animation */
+.dialog-slide-enter-active,
+.dialog-slide-leave-active,
+.dialog-slide-enter-active .el-dialog,
+.dialog-slide-leave-active .el-dialog {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dialog-slide-enter-from,
+.dialog-slide-leave-to {
+  opacity: 0;
+}
+
+.dialog-slide-enter-from .el-dialog,
+.dialog-slide-leave-to .el-dialog {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+/* Bounce Animation */
+.dialog-bounce-enter-active,
+.dialog-bounce-leave-active,
+.dialog-bounce-enter-active .el-dialog,
+.dialog-bounce-leave-active .el-dialog {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dialog-bounce-enter-from,
+.dialog-bounce-leave-to {
+  opacity: 0;
+}
+
+.dialog-bounce-enter-from .el-dialog,
+.dialog-bounce-leave-to .el-dialog {
+  opacity: 0;
+  transform: scale(0.3) translateY(-50px);
+}
+
+/* Object Configuration Animation */
+.dialog-custom-object-enter-active,
+.dialog-custom-object-leave-active,
+.dialog-custom-object-enter-active .el-dialog,
+.dialog-custom-object-leave-active .el-dialog {
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dialog-custom-object-enter-from,
+.dialog-custom-object-leave-to {
+  opacity: 0;
+}
+
+.dialog-custom-object-enter-from .el-dialog,
+.dialog-custom-object-leave-to .el-dialog {
+  opacity: 0;
+  transform: rotate(180deg) scale(0.5);
 }
 </style>

@@ -25,6 +25,14 @@ export default {
       meta: {
         title: $t("menus.pureDrawer")
       }
+    },
+    {
+      path: "/components/message",
+      name: "Message",
+      component: () => import("@/views/components/message.vue"),
+      meta: {
+        title: $t("menus.pureMessage")
+      }
     }
   ]
 } satisfies RouteConfigsTable;
