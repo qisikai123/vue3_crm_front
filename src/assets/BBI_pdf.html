@@ -355,7 +355,26 @@
                   <td th:text="${indexInc.count}">1</td>
                   <td th:text="${product.name}">Business Broadband Service</td>
                   <td th:text="${product.qty}">2</td>
-                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td>
+                    <!-- 判断是否包含空格 -->
+                    <th:block
+                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <s
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                      ></s>
+                      &nbsp;
+                      <span
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                      ></span>
+                    </th:block>
+                    <!-- 不包含空格的情况 -->
+                    <th:block
+                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <span th:text="${product.oneTimeCharge}"></span>
+                    </th:block>
+                  </td>
                   <td th:text="${product.standardMonthlyFee}">$2,398</td>
                   <td th:text="${product.monthlyRebate}">- $398</td>
                   <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
@@ -399,7 +418,26 @@
                   <td th:text="${indexInc.count}">1</td>
                   <td th:text="${product.name}">Business Broadband Service</td>
                   <td th:text="${product.qty}">2</td>
-                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td>
+                    <!-- 判断是否包含空格 -->
+                    <th:block
+                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <s
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                      ></s>
+                      &nbsp;
+                      <span
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                      ></span>
+                    </th:block>
+                    <!-- 不包含空格的情况 -->
+                    <th:block
+                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <span th:text="${product.oneTimeCharge}"></span>
+                    </th:block>
+                  </td>
                   <td th:text="${product.standardMonthlyFee}">$2,398</td>
                   <td th:text="${product.monthlyRebate}">- $398</td>
                   <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
@@ -441,7 +479,26 @@
                   <td th:text="${indexInc.count}">1</td>
                   <td th:text="${product.name}">Business Broadband Service</td>
                   <td th:text="${product.qty}">2</td>
-                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td>
+                    <!-- 判断是否包含空格 -->
+                    <th:block
+                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <s
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                      ></s>
+                      &nbsp;
+                      <span
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                      ></span>
+                    </th:block>
+                    <!-- 不包含空格的情况 -->
+                    <th:block
+                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                    >
+                      <span th:text="${product.oneTimeCharge}"></span>
+                    </th:block>
+                  </td>
                   <td th:text="${product.standardMonthlyFee}">$2,398</td>
                   <td th:text="${product.monthlyRebate}">- $398</td>
                   <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
@@ -556,7 +613,7 @@
                         "
                       >
                         <img
-                          th:if="${item.isNewAccount == '1' or !item.isNewAccount}"
+                          th:if="${item.accountNumber == null or item.accountNumber == ''}"
                           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
                         />
                       </div>
@@ -597,10 +654,8 @@
                     </div>
                     <div>
                       <span class="custom-checkbox"></span>
-                      <span
-                        >Correspondence and billing address (if different from
-                        Installation Address):
-                      </span>
+                      <b>Correspondence and billing address</b>
+                      <i> (if different from Installation Address):</i>
                     </div>
                     <div style="margin-top: 10px">
                       <span>Flat / Room:</span>
