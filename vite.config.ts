@@ -29,6 +29,7 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       proxy: {
         "/api": {
           target: "http://117.72.38.240:5100",
+          // target: "http://localhost:5100",
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, "")
         }

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Form</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 3cm 1cm 3cm 1.1cm;
+
+        @top-center {
+          content: element(header);
+        }
+
+        @bottom-center {
+          content: element(footer-container);
+        }
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        color: #000000;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        font-size: 14px;
+        line-height: 1.2;
+      }
+      .header {
+        margin: 10px 0 0px;
+        position: running(header);
+      }
+
+      .footer-container {
+        display: table;
+        width: 100%;
+        position: running(footer-container);
+      }
+
+      .footer-text,
+      .footer-page,
+      .footer-img {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .footer-text {
+        width: 40%;
+        padding-right: 20px;
+        font-size: 8px;
+        color: #666;
+      }
+
+      .footer-page {
+        width: 20%;
+        text-align: center;
+        font-size: 10px;
+        color: #333;
+        font-weight: bold;
+      }
+      .footer-page:before {
+        content: \'Page \' counter(page) \'/\' counter(pages);
+      }
+
+      .footer-img {
+        width: 40%;
+        text-align: right;
+      }
+
+      .footer-img img {
+        width: 200px;
+        height: 20px;
+        text-align: right;
+      }
+      a {
+        color: #01408e;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        padding: 0 0 20px;
+      }
+
+      tr {
+        color: #000;
+      }
+
+      th {
+        color: #000;
+        font-weight: 500;
+      }
+
+      td {
+        color: #000;
+      }
+      .common-custom-title {
+        color: #333333;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 18px;
+        display: inline-block;
+        margin: 10px 0;
+        padding: 10px 16px;
+        background-color: #d9d9d9;
+        width: 100%;
+      }
+      .custom-table {
+        border-collapse: collapse;
+        background-color: white;
+        table-layout: fixed;
+        font-size: 14px;
+      }
+
+      .custom-table th,
+      .custom-table td {
+        padding: 7px;
+        text-align: center;
+        border: 1px solid #000;
+        border-bottom: 0.5px solid #000;
+        word-break: break-all;
+        overflow: hidden;
+      }
+
+      .custom-table th {
+        background-color: #d9d9d9;
+      }
+
+      .custom-table2 td,
+      .custom-table2 th {
+        text-align: left;
+      }
+
+      .email-td {
+        vertical-align: middle;
+        padding: 7px;
+      }
+
+      .email-input-wrapper {
+        display: inline-block;
+        width: 70%;
+        border-bottom: 1px solid #000;
+        vertical-align: bottom;
+        padding-bottom: 2px;
+      }
+
+      .email-text {
+        display: inline-block;
+        vertical-align: bottom;
+        white-space: nowrap;
+        margin-left: 5px;
+      }
+
+      .custom-checkbox {
+        width: 12px;
+        height: 12px;
+        border: 1px solid #333;
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 2px;
+        position: relative;
+        overflow: hidden;
+        margin-right: 6px;
+      }
+      .custom-checkbox > img {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        bottom: 1px;
+      }
+
+      .billing-td {
+        position: relative;
+        vertical-align: bottom;
+        padding-bottom: 4px; /* 给下划线留空间 */
+      }
+
+      .billing-text {
+        vertical-align: middle;
+        margin-right: 6px;
+      }
+
+      /* 分页控制 */
+      .table-block {
+        page-break-inside: avoid;
+        margin-bottom: 0;
+      }
+
+      .contact-td {
+        vertical-align: top;
+        padding: 7px !important;
+      }
+
+      .contact-label {
+        font-size: 12px;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .contact-value-wrapper {
+        display: block;
+        border-bottom: 1px solid #000;
+        min-height: 18px;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 页头 -->
+      <div class="header">
+        <img
+          src="data:image/png;base64,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"
+          alt="Base64 Image"
+          style="width: 97px; height: 43px"
+        />
+      </div>
+
+      <!-- 页脚 -->
+      <div class="footer-container">
+        <div class="footer-text">
+          <div class="fw-b">HKT Limited</div>
+          <div>PO Box 9896 GPO Hong Kong T +852 2888 2888 F +852 2877 8877</div>
+          <a href="www.hkt.com">www.hkt.com</a>
+        </div>
+
+        <div class="footer-page"></div>
+
+        <div class="footer-img">
+          <img
+            src="data:image/png;base64,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"
+            alt="Base64 Image"
+          />
+        </div>
+      </div>
+
+      <div
+        style="
+          font-size: 27px;
+          line-height: 36px;
+          color: #000;
+          text-align: center;
+          font-weight: bold;
+        "
+      >
+        Application Form
+      </div>
+      <p style="margin-top: 20px">
+        Please fill in the following information, sign and return this
+        Application Form to our sales representative for registration.
+      </p>
+      <div class="common-custom-title">Customer Information</div>
+      <table class="custom-table">
+        <colgroup>
+          <col style="width: 210px" />
+          <col style="width: 506px" />
+        </colgroup>
+        <tr>
+          <td style="text-align: left">Customer Name</td>
+          <td style="text-align: left" th:text="${pdfOrderInfoBo.customerName}">
+            OSCA Customer 5
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align: left">Business Registration No</td>
+          <td
+            style="text-align: left"
+            th:text="${pdfOrderInfoBo.businessRegistrationNo}"
+          >
+            20251120001
+          </td>
+        </tr>
+      </table>
+
+      <div class="common-custom-title">Offer Details</div>
+
+      <!-- 表格1: Business Broadband基本信息 -->
+      <div class="table-block">
+        <div th:each="item : ${pdfOrderInfoBo.orderLineInfoBos}">
+          <table class="custom-table">
+            <colgroup>
+              <col style="width: 35px" />
+              <col style="width: 129px" />
+              <col style="width: 90px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="8" style="background-color: #fff">
+                  <div style="font-weight: bolder; font-size: 18px">
+                    Business Broadband
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3" style="background-color: #fff">
+                  Network Bandwidth (bps)
+                </th>
+                <th
+                  colspan="5"
+                  style="background-color: #fff"
+                  th:text="${item.bandwidth}"
+                >
+                  2.5G/2.5G (downstream / upstream)
+                </th>
+              </tr>
+              <tr>
+                <th colspan="3" style="background-color: #fff">
+                  Commitment Period
+                </th>
+                <th
+                  colspan="5"
+                  style="background-color: #fff"
+                  th:text="${item.period}"
+                >
+                  24 months
+                </th>
+              </tr>
+            </thead>
+          </table>
+
+          <!-- 表格2: Product(s) / Service(s) -->
+          <div class="table-block">
+            <table class="custom-table">
+              <colgroup>
+                <col style="width: 35px" />
+                <col style="width: 129px" />
+                <col style="width: 90px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th colspan="2">Product(s) / Service(s)</th>
+                  <th>Line Qty</th>
+                  <th>One Time Charge (Per Line)</th>
+                  <th>Standard Monthly Fee (Per Line)</th>
+                  <th>Monthly Rebate (Per Line)</th>
+                  <th>Effective Monthly Fee (Per Line)</th>
+                  <th>Total Monthly Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="product,indexInc : ${item.mainProductElementList}">
+                  <td th:text="${indexInc.count}">1</td>
+                  <td th:text="${product.name}">Business Broadband Service</td>
+                  <td th:text="${product.qty}">2</td>
+                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                  <td th:text="${product.monthlyRebate}">- $398</td>
+                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 表格3: Value Added Service(s) -->
+          <div
+            th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
+            class="table-block"
+          >
+            <table class="custom-table">
+              <colgroup>
+                <col style="width: 35px" />
+                <col style="width: 129px" />
+                <col style="width: 90px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th colspan="2">Value Added Service(s)</th>
+                  <th>Line Qty</th>
+                  <th>One Time Charge (Per Line)</th>
+                  <th>Standard Monthly Fee (Per Line)</th>
+                  <th>Monthly Rebate (Per Line)</th>
+                  <th>Effective Monthly Fee (Per Line)</th>
+                  <th>Total Monthly Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  th:each="product,indexInc : ${item.additionalEquipmentElementList}"
+                >
+                  <td th:text="${indexInc.count}">1</td>
+                  <td th:text="${product.name}">Business Broadband Service</td>
+                  <td th:text="${product.qty}">2</td>
+                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                  <td th:text="${product.monthlyRebate}">- $398</td>
+                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 表格4: Premium(s) -->
+          <div
+            th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
+            class="table-block"
+          >
+            <table class="custom-table">
+              <colgroup>
+                <col style="width: 35px" />
+                <col style="width: 129px" />
+                <col style="width: 90px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th colspan="2">Premium(s)</th>
+                  <th>Premium Qty (Per Line)</th>
+                  <th>One Time Charge (Per Line)</th>
+                  <th>Standard Monthly Fee</th>
+                  <th>Monthly Rebate (Per Line)</th>
+                  <th>Effective Monthly Fee (Per Line)</th>
+                  <th>Total Monthly Fee</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="product,indexInc : ${item.premiumElementList}">
+                  <td th:text="${indexInc.count}">1</td>
+                  <td th:text="${product.name}">Business Broadband Service</td>
+                  <td th:text="${product.qty}">2</td>
+                  <td th:text="${product.oneTimeCharge}">-</td>
+                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                  <td th:text="${product.monthlyRebate}">- $398</td>
+                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 表格5: Total Charge & Netvigator Admin Login -->
+          <div class="table-block">
+            <table class="custom-table">
+              <colgroup>
+                <col style="width: 35px" />
+                <col style="width: 129px" />
+                <col style="width: 90px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+              </colgroup>
+              <tbody>
+                <tr style="background-color: #d9d9d9">
+                  <td rowspan="2" colspan="2">Total Charge</td>
+                  <td colspan="2">One Time Charge</td>
+                  <td colspan="2">Monthly Service Fee</td>
+                  <td colspan="2">Contract Amount</td>
+                </tr>
+                <tr>
+                  <td colspan="2" th:text="${item.oneTimeCharge}">$0</td>
+                  <td colspan="2" th:text="${item.monthlyServiceFee}">
+                    $X,XXX
+                  </td>
+                  <td colspan="2" th:text="${item.contractAmount}">$XXXX</td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="background-color: #d9d9d9">
+                    Netvigator Admin Login
+                  </td>
+                  <td colspan="6" class="email-td">
+                    <span class="email-input-wrapper"></span>&nbsp;
+                    <span class="email-text">@biznetvigator.com</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 表格6: Billing & Fulfillment Info -->
+          <div class="table-block">
+            <table
+              class="custom-table custom-table2"
+              style="border-bottom: 1px solid #000; border-top: none"
+            >
+              <colgroup>
+                <col style="width: 35px" />
+                <col style="width: 129px" />
+                <col style="width: 90px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+                <col style="width: 92.4px" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th colspan="8">Billing &amp; Fulfillment Info</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colspan="2">Installation Address</td>
+                  <td colspan="6">
+                    <div th:text="${item.installationAddress}">
+                      G/F, BLOCK 1, PCCW HOLIDAY BUNGALOW, FA PENG ROAD, CHEUNG
+                      CHAU, NEW TERRITORIES
+                    </div>
+                    <div style="font-size: 11.7px">
+                      Note (1): For building/estate that the telecommunication
+                      infrastructure is not owned by Hong Kong Telecommunication
+                      (HKT) Limited, there will be additional 14 calendar days
+                      for provisioning the service.
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td rowspan="2" colspan="2">Billing Preference</td>
+                  <td colspan="6" class="billing-td">
+                    <div>
+                      <span class="custom-checkbox"></span>
+                      <span>Email address for receiving e-bills:</span>
+                      <div class="billing-line"></div>
+                    </div>
+                    <div>
+                      <span class="custom-checkbox"></span>
+                      <span>Paper bill (Charge: HK$20 per bill)</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <div style="display: inline-block">
+                      <div
+                        class="custom-checkbox"
+                        style="
+                          display: inline-block;
+                          vertical-align: middle;
+                          margin: 0;
+                          margin-right: 5px;
+                          padding: 0 0 3px 1px;
+                        "
+                      >
+                        <img
+                          th:if="${item.isNewAccount == '1' or !item.isNewAccount}"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                        />
+                      </div>
+                      <span
+                        style="display: inline-block; vertical-align: middle"
+                        >New Account</span
+                      >
+                    </div>
+                    <div>
+                      <div
+                        class="custom-checkbox"
+                        style="
+                          display: inline-block;
+                          vertical-align: middle;
+                          margin: 0;
+                          margin-right: 5px;
+                          padding: 0 0 3px 1px;
+                        "
+                      >
+                        <img
+                          th:if="${item.accountNumber != null and item.accountNumber != ''}"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                        />
+                      </div>
+                      <span
+                        style="display: inline-block; vertical-align: middle"
+                        >Bill to existing Account Number:
+                        <span
+                          style="
+                            display: inline-block;
+                            width: 200px;
+                            border-bottom: 1px solid #333;
+                          "
+                          th:text="${item.accountNumber}"
+                          >21321312</span
+                        >
+                      </span>
+                    </div>
+                    <div>
+                      <span class="custom-checkbox"></span>
+                      <span
+                        >Correspondence and billing address (if different from
+                        Installation Address):
+                      </span>
+                    </div>
+                    <div style="margin-top: 10px">
+                      <span>Flat / Room:</span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 103px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                      <span>Floor:</span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 103px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                      <span> Block / Tower: </span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 90px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                    </div>
+                    <div style="margin-top: 10px">
+                      <span>Building / Estate:</span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 182px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                      <span>Street:</span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 182px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                    </div>
+                    <div style="margin-top: 10px">
+                      <span>District</span>
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 182px;
+                          background-color: #000;
+                          height: 1px;
+                        "
+                      ></span
+                      >,
+                      <span>
+                        [ &nbsp;&nbsp;] HK [ &nbsp;&nbsp;] KLN [ &nbsp;&nbsp;]
+                        NT</span
+                      >
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Service Request Date</td>
+                  <td colspan="6" th:text="${item.serviceRequestDate}">
+                    XXXXX
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">Administrative Contact</td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Name</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${administrativeContact.name}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Tel. no / Mobile no</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${administrativeContact.mobileNo}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${administrativeContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="2">Billing Contact</td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Name</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${billingContact.name}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Tel. no / Mobile no</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${billingContact.mobileNo}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${billingContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="2">On-Site Contact</td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Name</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${onsiteContact.name}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Tel. no / Mobile no</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${onsiteContact.mobileNo}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${onsiteContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="2">Technical Contact</td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Name</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${technicalContact.name}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Tel. no / Mobile no</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${technicalContact.mobileNo}"
+                      >John Chan</span
+                    >
+                  </td>
+
+                  <td colspan="2" class="contact-td">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${technicalContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- supplement table -->
+          <div th:utext="${item.supplementaryContent}"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

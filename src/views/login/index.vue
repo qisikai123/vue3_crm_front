@@ -135,8 +135,8 @@ const handleRegister = () => {
                 <h6>{{ t("login.noRegister") }}</h6>
                 <a
                   href="javascript:void(0)"
-                  @click="mainStyle = true"
                   class="toggle"
+                  @click="mainStyle = true"
                   >{{ t("login.register") }}</a
                 >
               </div>
@@ -187,8 +187,8 @@ const handleRegister = () => {
 
                 <Motion :delay="400">
                   <input
-                    type="submit"
                     v-loading="loading"
+                    type="submit"
                     :value="t('login.login')"
                     class="sign-btn"
                   />
@@ -218,8 +218,8 @@ const handleRegister = () => {
                 <h6>{{ t("login.alreadyHaveAccount") }}</h6>
                 <a
                   href="javascript:void(0)"
-                  @click="mainStyle = false"
                   class="toggle"
+                  @click="mainStyle = false"
                   >{{ t("login.login") }}</a
                 >
               </div>
@@ -281,7 +281,7 @@ const handleRegister = () => {
             </form>
           </div>
 
-          <div class="carousel"></div>
+          <div class="carousel" />
         </div>
       </div>
     </main>

@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { computed, withDefaults, defineProps, defineEmits } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useGlobal } from '@pureadmin/utils'
-import { useNav } from '@/layout/hooks/useNav'
+import { computed, withDefaults, defineProps, defineEmits } from "vue";
+import { useI18n } from "vue-i18n";
+import { useGlobal } from "@pureadmin/utils";
+import { useNav } from "@/layout/hooks/useNav";
 
-import ArrowLeft from '~icons/ri/arrow-left-double-fill'
+import ArrowLeft from "~icons/ri/arrow-left-double-fill";
 
 interface Props {
-  isActive?: boolean
+  isActive?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
-  isActive: false,
-})
+  isActive: false
+});
 
-const { t } = useI18n()
-const { tooltipEffect } = useNav()
+const { t } = useI18n();
+const { tooltipEffect } = useNav();
 
 const iconClass = computed(() => {
-  return ['w-[16px]', 'h-[16px]']
-})
+  return ["w-[16px]", "h-[16px]"];
+});
 
-const { $storage } = useGlobal<GlobalPropertiesApi>()
-const themeColor = computed(() => $storage.layout?.themeColor)
+const { $storage } = useGlobal<GlobalPropertiesApi>();
+const themeColor = computed(() => $storage.layout?.themeColor);
 
 const emit = defineEmits<{
-  (e: 'toggleClick'): void
-}>()
+  (e: "toggleClick"): void;
+}>();
 
 const toggleClick = () => {
-  emit('toggleClick')
-}
+  emit("toggleClick");
+};
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const toggleClick = () => {
         : t('buttons.pureClickExpand'),
       theme: tooltipEffect,
       hideOnClick: 'toggle',
-      placement: 'right',
+      placement: 'right'
     }"
     class="center-collapse"
     @click="toggleClick"

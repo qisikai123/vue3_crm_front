@@ -33,6 +33,22 @@ export default {
       meta: {
         title: $t("menus.pureMessage")
       }
+    },
+    {
+      path: "/components/upload",
+      name: "PureUpload",
+      component: () => import("@/views/components/upload/index.vue"),
+      meta: {
+        title: $t("menus.pureUpload")
+      }
+    },
+    {
+      path: "/components/fileQuery",
+      name: "FileQuery",
+      component: () => import("@/views/components/fileQuery/index.vue"),
+      meta: {
+        title: $t("menus.pureFileQuery")
+      }
     }
   ]
 } satisfies RouteConfigsTable;

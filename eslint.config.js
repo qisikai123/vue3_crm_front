@@ -47,7 +47,8 @@ export default defineConfig([
         PromiseFn: "readonly",
         ComponentElRef: "readonly",
         parseInt: "readonly",
-        parseFloat: "readonly"
+        parseFloat: "readonly",
+        TableColumnList: "readonly"
       }
     },
     plugins: {

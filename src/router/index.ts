@@ -56,6 +56,8 @@ Object.keys(modules).forEach(key => {
   routes.push(modules[key].default);
 });
 
+console.log(modules, "modules");
+
 /** 导出处理后的静态路由（三级及以上的路由全部拍成二级） */
 export const constantRoutes: Array<RouteRecordRaw> = formatTwoStageRoutes(
   formatFlatteningRoutes(buildHierarchyTree(ascending(routes.flat(Infinity))))
@@ -203,6 +205,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
             if (route && route.meta?.title) {
               if (isAllEmpty(route.parentId) && route.meta?.backstage) {
                 // 此处为动态顶级路由（目录）
+                console.log(route, "route");
                 const { path, name, meta } = route.children[0];
                 useMultiTagsStoreHook().handleTags("push", {
                   path,

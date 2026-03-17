@@ -1,23 +1,23 @@
-import { useNav } from './useNav'
-import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
-import { watch, onBeforeMount, type Ref } from 'vue'
+import { useNav } from "./useNav";
+import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
+import { watch, onBeforeMount, type Ref } from "vue";
 
 export function useTranslationLang(ref?: Ref) {
-  const { $storage, handleResize } = useNav()
-  const { locale, t } = useI18n()
-  const route = useRoute()
+  const { $storage, handleResize } = useNav();
+  const { locale, t } = useI18n();
+  const route = useRoute();
 
   function translationCh() {
-    $storage.locale = { locale: 'zh' }
-    locale.value = 'zh'
-    ref && handleResize(ref.value)
+    $storage.locale = { locale: "zh" };
+    locale.value = "zh";
+    ref && handleResize(ref.value);
   }
 
   function translationEn() {
-    $storage.locale = { locale: 'en' }
-    locale.value = 'en'
-    ref && handleResize(ref.value)
+    $storage.locale = { locale: "en" };
+    locale.value = "en";
+    ref && handleResize(ref.value);
   }
 
   // watch(
@@ -28,14 +28,14 @@ export function useTranslationLang(ref?: Ref) {
   // );
 
   onBeforeMount(() => {
-    locale.value = $storage.locale?.locale ?? 'zh'
-  })
+    locale.value = $storage.locale?.locale ?? "zh";
+  });
 
   return {
     t,
     route,
     locale,
     translationCh,
-    translationEn,
-  }
+    translationEn
+  };
 }

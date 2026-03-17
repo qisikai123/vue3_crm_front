@@ -1,19 +1,19 @@
 <script lang="ts">
 export default {
-  name: 'SidebarLogo',
-}
+  name: "SidebarLogo"
+};
 </script>
 
 <script setup lang="ts">
-import { getTopMenu } from '@/router/utils'
-import { useNav } from '@/layout/hooks/useNav'
-import { defineProps } from 'vue'
+import { getTopMenu } from "@/router/utils";
+import { useNav } from "@/layout/hooks/useNav";
+import { defineProps } from "vue";
 
 defineProps({
-  collapse: Boolean,
-})
+  collapse: Boolean
+});
 
-const { title, getLogo } = useNav()
+const { title, getLogo } = useNav();
 </script>
 
 <template>

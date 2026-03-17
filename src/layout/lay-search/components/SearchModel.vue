@@ -337,8 +337,8 @@ onKeyStroke("ArrowDown", handleDown);
         <SearchResult
           v-if="showSearchResult"
           ref="resultRef"
-          :options="resultOptions"
           v-model:value="activePath"
+          :options="resultOptions"
           @click="handleEnter"
         />
       </el-scrollbar>

@@ -78,6 +78,7 @@ menus:
   pureGanttastic: Gantt Chart
   pureProgress: Progress
   pureUpload: File Upload
+  pureFileQuery: File Query
   pureCheckCard: CheckCard
   pureMenus: MultiLevel Menu
   pureMenu1: Menu1
