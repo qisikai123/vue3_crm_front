@@ -1,0 +1,147 @@
+<!-- 表格7: Advanced Email  -->
+<div th:if="${product.elementId == '34000075'}" class="table-block">
+  <table
+    class="custom-table custom-table2"
+    style="border-bottom: 1px solid #000; border-top: none"
+  >
+    <colgroup>
+      <col style="width: 358px" />
+      <col style="width: 120px" />
+      <col style="width: 238px" />
+    </colgroup>
+    <tr>
+      <td colspan="3" style="text-align: center">Advanced Email</td>
+    </tr>
+    <tr>
+      <td colspan="3" style="background-color: #d9d9d9">
+        Value Added Service(s) Info
+      </td>
+    </tr>
+    <tr>
+      <td>Commitment Period</td>
+      <td><span th:text="${product.itemMap.contract_period}"></span>months</td>
+    </tr>
+    <tr>
+      <td rowspan="2">Advanced Email Description</td>
+      <td>No. of Login</td>
+      <td>Email Storage</td>
+    </tr>
+    <tr>
+      <td th:text="${product.itemMap.no_of_login}">xx</td>
+      <td th:text="${product.itemMap.no_of_storage}">xx GB</td>
+    </tr>
+    <tr>
+      <td colspan="3">New E-mail Registration</td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <p>Please note that:</p>
+        <p>
+          - the administrator can manage quota allocation for other users via
+          customer portal at www.biznetvigator.com (by default is 400 MB per
+          email account)
+        </p>
+        <p>
+          - for email service migration, it is highly recommended that you
+          backup your emails from your existing email service provider prior to
+          actual email migration.- migration is required if the domain name
+          change from Leased Line to Business Broadband Service
+        </p>
+        <p>
+          The number of characters for an e-mail login should between 2-15
+          characters. All characters should be in lower cases. No special
+          characters such as #, $, * etc is allowed. It should begin with an
+          alphabet. The number of characters for a domain name "login@domain"
+          should be less than 36 characters.
+        </p>
+        <p>
+          The login ID will be auto-assigned if your preference is not
+          applicable. It takes 5 working days to activate E-mail account or
+          roaming service. A default mailbox size is provisioned, please visit
+          www.biznetvigator.com and login your admin user account to manage your
+          mailbox size.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <table class="custom-table">
+          <colgroup>
+            <col style="width: 30px" />
+            <col style="width: 228px" />
+            <col style="width: 228px" />
+            <col style="width: 230px" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td></td>
+              <td>
+                Login ID first Choice<br />
+                (Within 15 characters)
+              </td>
+              <td>
+                Login ID second Choice<br />
+                (Within 15 characters)
+              </td>
+              <td>
+                Preferred Alias@domain<br />
+                Example:you@yourdomain.com
+              </td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="line-height: 1.5">
+          <p style="margin-top: 20px">
+            E-mail Login for activating Admin Function: ____________________
+            (Please fill in Administrative
+          </p>
+          <p>Contact information above)</p>
+          <p>E-mail Service Setup Charge Details:</p>
+          <ul style="padding: 0 20px">
+            <li>Email Mapping Modification: HK$100/line</li>
+            <li>E-mail Login Modification: HK$50/line</li>
+            <li>Create E-mail Login: Waived within the term plan limit</li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        Terms and Conditions (T&amp;C) of Value Added Service(s)
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <ol style="padding: 0 20px; line-height: 1.5">
+          <li>
+            The Commitment Period shall end with the Commitment Period of the
+            Customer’s Business NETVIGATOR Broadband Service indicated as the
+            Existing Broadband Service Ref. No. above in this Application.
+          </li>
+          <li>
+            For email service migration, it is highly recommended that you
+            backup your emails from your existing email service provider prior
+            to actual email migration.
+          </li>
+          <li>
+            The administrator can manage quota allocation for other users via
+            customer portal at
+            <a href="www.biznetvigator.com">www.biznetvigator.com</a>
+            (by default is 400 MB per email account)
+          </li>
+          <li>
+            The number of characters before @yourdomain of E-mail address should
+            not exceed 15 characters.
+          </li>
+          <li>Mail size for incoming / outgoing e-mail: 25MB per e-mail.</li>
+        </ol>
+      </td>
+    </tr>
+  </table>
+</div>

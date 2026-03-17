@@ -1,0 +1,95 @@
+<!-- Mesh WiFi Router    -->
+<div th:if="${product.elementId == '34000212'}" class="table-block">
+  <table
+    class="custom-table custom-table2"
+    style="border-bottom: 1px solid #000; border-top: none"
+  >
+    <colgroup>
+      <col style="width: 238px" />
+      <col style="width: 238px" />
+      <col style="width: 240px" />
+    </colgroup>
+    <tr>
+      <td style="text-align: center" colspan="3">Mesh WiFi Router</td>
+    </tr>
+    <tr>
+      <td colspan="3" style="background-color: #d9d9d9">
+        Value Added Service(s) Info
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">Mesh WiFi Router Model</td>
+      <td th:text="${product.itemMap.router}">xx</td>
+    </tr>
+    <tr>
+      <td colspan="3">Mesh WiFi Settings 4 &amp;5 (Network Name (SSID)</td>
+    </tr>
+    <tr>
+      <td>
+        <div class="custom-checkbox custom-checkbox2">
+          <img
+            th:if="${product.itemMap.PM_BB_2_4GHz_SSID != null and product.itemMap.PM_BB_2_4GHz_SSID != ''}"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+          />
+        </div>
+        <span>
+          2.4GHz:
+          <span th:text="${product.itemMap.PM_BB_2_4GHz_SSID}"></span>
+        </span>
+      </td>
+      <td>
+        <div class="custom-checkbox custom-checkbox2">
+          <img
+            th:if="${product.itemMap.PM_BB_5GHz_SSID != null and product.itemMap.PM_BB_5GHz_SSID != ''}"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+          />
+        </div>
+        <span>
+          5GHz:
+          <span th:text="${product.itemMap.PM_BB_5GHz_SSID}"></span>
+        </span>
+      </td>
+      <td>
+        <div class="custom-checkbox custom-checkbox2">
+          <img
+            th:if="${product.itemMap.PM_BB_6GHz_SSID != null and product.itemMap.PM_BB_6GHz_SSID != ''}"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+          />
+        </div>
+        <span>
+          6GHz:
+          <span th:text="${product.itemMap.PM_BB_6GHz_SSID}"></span>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        Terms and Conditions (T&amp;C) of Value Added Service (s)
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <ol>
+          <li>Mixed brands/ Model of Mesh WiFi Router are NOT allowed.</li>
+          <li>
+            Current bundled router MUST BE TP-Link EX510 Pro AX3000 Mesh Wi-Fi
+            router.
+          </li>
+          <li>
+            Current bundled router TP-Link EX510 Pro AX3000 Mesh Wi-Fi router
+            MUST BE enabled Wireless in 2.5G xMA Business Broadband Service.
+          </li>
+          <li>
+            SSID 3-28 alphanumeric characters including space, hyphen and
+            underscore. Customer should provide WPA/WPA2 key on-site for 1st
+            time Free Configuration.
+          </li>
+          <li>
+            6GHz band SSID only applicable to Tri-Band "TP-Link HB610 BE11000
+            Mesh Wi-Fi Router"
+          </li>
+        </ol>
+      </td>
+    </tr>
+  </table>
+</div>
