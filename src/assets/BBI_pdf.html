@@ -266,11 +266,27 @@
         </tr>
         <tr>
           <td style="text-align: left">Business Registration No</td>
-          <td
-            style="text-align: left"
-            th:text="${pdfOrderInfoBo.businessRegistrationNo}"
-          >
-            20251120001
+          <td style="text-align: left">
+            <!-- 场景1：documentType≠0 → 直接展示（兜底空值为-） -->
+            <span
+              th:if="${(pdfOrderInfoBo.documentType + '') != '0'}"
+              th:text="${pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo}"
+              >20251120001</span
+            >
+
+            <!-- 场景2：documentType=0 → 纯EL表达式极简格式化 -->
+            <span
+              th:if="${(pdfOrderInfoBo.documentType + '') == '0'}"
+              th:text="
+                ${(pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo).toString().length() <= 8 
+                  or (pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo).toString().startsWith('#')
+                  ? (pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo)
+                  : (pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo).toString().substring(0, 8) + '-' 
+                    + (pdfOrderInfoBo.businessRegistrationNo == null ? '-' : pdfOrderInfoBo.businessRegistrationNo).toString().substring(8)
+                }
+            "
+              >20251120-001</span
+            >
           </td>
         </tr>
       </table>
