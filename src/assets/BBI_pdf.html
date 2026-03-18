@@ -29,6 +29,9 @@
         font-size: 14px;
         line-height: 1.2;
       }
+      a {
+        color: #01408e;
+      }
       .header {
         margin: 10px 0 0px;
         position: running(header);
@@ -169,6 +172,12 @@
         position: absolute;
         bottom: 1px;
       }
+      .checkbox-text {
+        width: 80%;
+        position: absolute;
+        top: -2px;
+        left: 20px;
+      }
 
       .billing-td {
         position: relative;
@@ -205,6 +214,14 @@
         min-height: 18px;
         font-size: 12px;
         line-height: 1.4;
+      }
+
+      .text-content {
+        line-height: 1.4;
+      }
+
+      .page-break {
+        page-break-before: always; /* 强制该模块前分页 */
       }
     </style>
   </head>
@@ -881,6 +898,164 @@
           <!-- supplement table -->
           <div th:utext="${item.supplementaryContent}"></div>
         </div>
+      </div>
+
+      <!-- Personal Information Collection Statement  -->
+      <div class="table-block text-content page-break">
+        <table
+          class="custom-table custom-table2"
+          style="border-bottom: 1px solid #000; border-top: none"
+        >
+          <colgroup>
+            <col style="width: 35px" />
+            <col style="width: 129px" />
+            <col style="width: 90px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th colspan="8" style="background-color: #fff">
+                Personal Information Collection Statement
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="8">
+                <p style="font-style: italic">
+                  Please note that the fields of information marked with
+                  asterisks or as mandatory in any form (if any) must be
+                  provided before we can provide you with the subscribed
+                  service(s). You may choose not to provide the optional
+                  information (i.e. the fields not marked with asterisks or as
+                  mandatory) but your user experience will be affected if we do
+                  not have the relevant information to offer you with enhanced
+                  and personalised services.
+                </p>
+                <p style="margin-top: 12px">
+                  The personal data and other information that you provided and
+                  other information collected, generated and/or compiled by us
+                  about you from time to time subsequently (collectively,
+                  "<b>Data</b>") will be collected, used and retained by Hong
+                  Kong Telecommunications (HKT) Limited (“HKT”) and the relevant
+                  service provider(s) of the service(s) you are subscribing to
+                  namely Business NETVIGATOR Broadband Service and other
+                  relevant services (collectively, “<b>Services</b>”), being one
+                  or more of the members of the Group (being, HKT Limited, PCCW
+                  Limited and their respective subsidiaries, affiliates and
+                  associated companies) (HKT Limited is a company incorporated
+                  in the Cayman Islands with limited liability), including but
+                  not limited to Hong Kong Telecommunications (HKT) Limited, CSL
+                  Mobile Limited, Now TV Limited, Moov (Hong Kong) Limited, PCCW
+                  OTT (Hong Kong) Limited, eSmartHealth Limited, HKT Education
+                  Limited, Club HKT Limited, HKT CSP Limited, HKT Payment
+                  Limited, HKT Flexi Limited and HKT Advance Limited (as the
+                  case maybe), in accordance with the requirements of the
+                  Personal Data (Privacy) Ordinance (Chapter 486 of the Laws of
+                  Hong Kong) and other applicable laws, rules and regulations.
+                </p>
+                <p style="margin-top: 12px">
+                  The details of the collection, compilation, retention, use,
+                  disclosure and processing of the Data and any further
+                  information about the Services are set out in the applicable
+                  terms and conditions of the Services, this Personal
+                  Information Collection Statement, the Privacy Statement of the
+                  HKT Group (<a href="www.hkt.com/legal/privacy.html"
+                    >www.hkt.com/legal/privacy.html</a
+                  >) and/or the Privacy Statement of the PCCW Group (<a
+                    href="www.hkt.com/legal/privacy.html"
+                    >www.hkt.com/legal/privacy.html</a
+                  >).
+                </p>
+                <p style="margin-top: 12px">
+                  The Data may be disclosed to, used or retained by other
+                  members of the Group, their respective agents (including debt
+                  collection agent) and business partners for purposes related
+                  to the provision of the Services and other purposes to which
+                  you have consented at any time. We may also be ordered by
+                  regulatory bodies, government authorities and courts of law in
+                  different jurisdictions to disclose the Data in order to
+                  comply with legal obligations and duties imposed on us.
+                </p>
+                <p style="margin-top: 12px">
+                  Subject to your rights indicated by marking in the relevant
+                  box or leaving it unmarked, we may use your Data (including,
+                  without limitation, your name, contact particulars, service
+                  usage, subscription details, location data and other customer
+                  profiling data), for the purpose of direct marketing,
+                  including sending to you notices and/or updates about gifts,
+                  discounts, privileged offers, benefits and promotions related
+                  to the Services as well as other products and/or services,
+                  including without limitation: TV, telecommunications,
+                  over-the-top (OTT) services, content services, mobile voice,
+                  SMS and data communications, IDD/roaming, Internet
+                  connectivity, cloud services, electronic/mobile payment,
+                  entertainment, secretarial services, personal assistant
+                  services and information services (such as weather, finance
+                  and news information), device accessories, mobile applications
+                  and software, computer peripheral, accessories and software
+                  (including notebooks, handsets, mobile devices and
+                  accessories, keyboards, security installations and mobile
+                  applications), reward, loyalty and privilege programs,
+                  lifestyle, networking events, travelling, banking, alcohol,
+                  sports, music, gaming, transportation, household products,
+                  food and beverages, finance, insurance, asset and wealth
+                  management services and products, pensions, investments,
+                  brokering, financial advisory, credit and other financial
+                  services and products, education, health and wellness, beauty
+                  products and services, fashion and accessories, electronics,
+                  social networking, technology, e-commerce,digital assets and
+                  related offerings and services, logistics, retail, home and
+                  décor, media and high-end consumer products and services.
+                </p>
+                <p style="margin-top: 12px">
+                  I object to the proposed use of my Data for direct marketing
+                  as stated above by the following entity(ies):
+                </p>
+                <div
+                  style="
+                    margin-top: 12px;
+                    line-height: 1; /* 重置行高，避免默认行高干扰 */
+                    position: relative;
+                  "
+                >
+                  <div class="custom-checkbox"></div>
+                  <span class="checkbox-text">
+                    The service provider(s) of the Services
+                  </span>
+                </div>
+                <p style="margin-top: 12px">
+                  You have a right to withdraw your consent to the use of your
+                  Data for direct marketing purpose (if given) at any time. You
+                  are also entitled to access, correct or enquire about your
+                  personal data being held by us. For any such request, please
+                  do so by writing to the HKT Group's Group Data Protection
+                  Officer (GPO Box 9896 or
+                  <a href="privacy@pccw.com">privacy@pccw.com</a>) and/or the
+                  PCCW Group's Group Data Protection Officer (GPO Box 9872 or
+                  <a href="privacy@pccw.com">privacy@pccw.com</a>).
+                </p>
+                <div
+                  style="
+                    margin-top: 12px;
+                    line-height: 1; /* 重置行高，避免默认行高干扰 */
+                    position: relative;
+                  "
+                >
+                  <div class="custom-checkbox"></div>
+                  <span class="checkbox-text">
+                    I agree to the contents of the above Personal Information
+                    Collection Statemen
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </body>
