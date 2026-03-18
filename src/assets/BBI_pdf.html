@@ -227,9 +227,11 @@
       }
       li > p {
         margin-left: 30px;
+        margin-top: 12px;
       }
       li > .p2 {
         margin-left: 60px;
+        margin-top: 12px;
       }
       .page-break {
         page-break-before: always; /* 强制该模块前分页 */
@@ -404,12 +406,14 @@
                     <th:block
                       th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
                     >
+                      <!-- 空格前的内容显示在删除线中 -->
                       <s
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
                       ></s>
                       &nbsp;
+                      <!-- 空格后的内容显示在普通span中 -->
                       <span
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
                       ></span>
                     </th:block>
                     <!-- 不包含空格的情况 -->
@@ -467,12 +471,14 @@
                     <th:block
                       th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
                     >
+                      <!-- 空格前的内容显示在删除线中 -->
                       <s
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
                       ></s>
                       &nbsp;
+                      <!-- 空格后的内容显示在普通span中 -->
                       <span
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
                       ></span>
                     </th:block>
                     <!-- 不包含空格的情况 -->
@@ -528,12 +534,14 @@
                     <th:block
                       th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
                     >
+                      <!-- 空格前的内容显示在删除线中 -->
                       <s
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
                       ></s>
                       &nbsp;
+                      <!-- 空格后的内容显示在普通span中 -->
                       <span
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
                       ></span>
                     </th:block>
                     <!-- 不包含空格的情况 -->
