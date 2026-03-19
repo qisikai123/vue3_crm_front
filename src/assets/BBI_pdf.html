@@ -142,12 +142,16 @@
         padding: 7px;
       }
 
-      .email-input-wrapper {
+      .line {
         display: inline-block;
         width: 70%;
         border-bottom: 1px solid #000;
         vertical-align: bottom;
         padding-bottom: 2px;
+      }
+
+      .email-input-wrapper {
+        width: 70%;
       }
 
       .email-text {
@@ -592,7 +596,7 @@
                     Netvigator Admin Login
                   </td>
                   <td colspan="6" class="email-td">
-                    <span class="email-input-wrapper"></span>&nbsp;
+                    <span class="line email-input-wrapper"></span>&nbsp;
                     <span class="email-text">@biznetvigator.com</span>
                   </td>
                 </tr>
@@ -692,7 +696,7 @@
                       </div>
                       <span
                         style="display: inline-block; vertical-align: middle"
-                        >Bill to existing Account Number:
+                        >Bill to Existing Account Number:
                         <span
                           style="
                             display: inline-block;
@@ -1536,11 +1540,15 @@
                 <p style="margin-top: 12">(with Company Chop)</p>
                 <div style="position: relative; height: 150px">
                   <div style="position: absolute; right: 1px">
-                    <p style="margin-top: 12px">Name:______________________</p>
                     <p style="margin-top: 12px">
-                      Title:_______________________
+                      Name: <span class="line" style="width: 110px"></span>
                     </p>
-                    <p style="margin-top: 12px">Date:_______________________</p>
+                    <p style="margin-top: 12px">
+                      Title: <span class="line" style="width: 120px"></span>
+                    </p>
+                    <p style="margin-top: 12px">
+                      Date: <span class="line" style="width: 120px"></span>
+                    </p>
                   </div>
                 </div>
               </td>
