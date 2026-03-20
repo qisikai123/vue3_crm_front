@@ -25,10 +25,13 @@
         color: #000000;
       }
       body {
-        font-family: "PingFang SC", sans-serif;
+        font-family: "Calibri", sans-serif;
         background-color: #fff;
         font-size: 14px;
         line-height: 1.2;
+      }
+      .china {
+        font-family: "PingFang SC", serif;
       }
       a {
         color: #01408e;
@@ -341,8 +344,59 @@
       <div class="common-custom-title">Offer Details</div>
 
       <!-- 表格1: Business Broadband基本信息 -->
-      <div class="table-block">
-        <div th:each="item : ${pdfOrderInfoBo.orderLineInfoBos}">
+      <!-- <div class="table-block"> -->
+      <div
+        th:each="item, stat : ${pdfOrderInfoBo.orderLineInfoBos}"
+        th:class="'table-block ' + (${stat.first} ? '' : 'page-break')"
+      >
+        <table class="custom-table">
+          <colgroup>
+            <col style="width: 35px" />
+            <col style="width: 129px" />
+            <col style="width: 90px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+            <col style="width: 92.4px" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th colspan="8" style="background-color: #fff">
+                <div style="font-weight: bolder; font-size: 16px">
+                  Business Broadband
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <th colspan="3" style="background-color: #fff">
+                Network Bandwidth (bps)
+              </th>
+              <th
+                colspan="5"
+                style="background-color: #fff"
+                th:text="${item.bandwidth}"
+              >
+                2.5G/2.5G (downstream / upstream)
+              </th>
+            </tr>
+            <tr>
+              <th colspan="3" style="background-color: #fff">
+                Commitment Period
+              </th>
+              <th
+                colspan="5"
+                style="background-color: #fff"
+                th:text="${item.period}"
+              >
+                24 months
+              </th>
+            </tr>
+          </thead>
+        </table>
+
+        <!-- 表格2: Product(s) / Service(s) -->
+        <div class="table-block">
           <table class="custom-table">
             <colgroup>
               <col style="width: 35px" />
@@ -356,585 +410,531 @@
             </colgroup>
             <thead>
               <tr>
-                <th colspan="8" style="background-color: #fff">
-                  <div style="font-weight: bolder; font-size: 16px">
-                    Business Broadband
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <th colspan="3" style="background-color: #fff">
-                  Network Bandwidth (bps)
-                </th>
-                <th
-                  colspan="5"
-                  style="background-color: #fff"
-                  th:text="${item.bandwidth}"
-                >
-                  2.5G/2.5G (downstream / upstream)
-                </th>
-              </tr>
-              <tr>
-                <th colspan="3" style="background-color: #fff">
-                  Commitment Period
-                </th>
-                <th
-                  colspan="5"
-                  style="background-color: #fff"
-                  th:text="${item.period}"
-                >
-                  24 months
-                </th>
+                <th colspan="2">Product(s) / Service(s)</th>
+                <th>Line Qty</th>
+                <th>One Time Charge (Per Line)</th>
+                <th>Standard Monthly Fee (Per Line)</th>
+                <th>Monthly Rebate (Per Line)</th>
+                <th>Effective Monthly Fee (Per Line)</th>
+                <th>Total Monthly Fee</th>
               </tr>
             </thead>
+            <tbody>
+              <tr th:each="product,indexInc : ${item.mainProductElementList}">
+                <td th:text="${indexInc.count}">1</td>
+                <td th:text="${product.name}">Business Broadband Service</td>
+                <td th:text="${product.qty}">2</td>
+                <td>
+                  <!-- 判断是否包含空格 -->
+                  <th:block
+                    th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <!-- 空格前的内容显示在删除线中 -->
+                    <s
+                      th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                    ></s>
+                    &nbsp;
+                    <!-- 空格后的内容显示在普通span中 -->
+                    <span
+                      th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                    ></span>
+                  </th:block>
+                  <!-- 不包含空格的情况 -->
+                  <th:block
+                    th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <span th:text="${product.oneTimeCharge}"></span>
+                  </th:block>
+                </td>
+                <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                <td th:text="${product.monthlyRebate}">- $398</td>
+                <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                <td th:text="${product.totalMonthlyFee}">$4,000</td>
+              </tr>
+            </tbody>
           </table>
-
-          <!-- 表格2: Product(s) / Service(s) -->
-          <div class="table-block">
-            <table class="custom-table">
-              <colgroup>
-                <col style="width: 35px" />
-                <col style="width: 129px" />
-                <col style="width: 90px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th colspan="2">Product(s) / Service(s)</th>
-                  <th>Line Qty</th>
-                  <th>One Time Charge (Per Line)</th>
-                  <th>Standard Monthly Fee (Per Line)</th>
-                  <th>Monthly Rebate (Per Line)</th>
-                  <th>Effective Monthly Fee (Per Line)</th>
-                  <th>Total Monthly Fee</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="product,indexInc : ${item.mainProductElementList}">
-                  <td th:text="${indexInc.count}">1</td>
-                  <td th:text="${product.name}">Business Broadband Service</td>
-                  <td th:text="${product.qty}">2</td>
-                  <td>
-                    <!-- 判断是否包含空格 -->
-                    <th:block
-                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <!-- 空格前的内容显示在删除线中 -->
-                      <s
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
-                      ></s>
-                      &nbsp;
-                      <!-- 空格后的内容显示在普通span中 -->
-                      <span
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
-                      ></span>
-                    </th:block>
-                    <!-- 不包含空格的情况 -->
-                    <th:block
-                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <span th:text="${product.oneTimeCharge}"></span>
-                    </th:block>
-                  </td>
-                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
-                  <td th:text="${product.monthlyRebate}">- $398</td>
-                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
-                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- 表格3: Value Added Service(s) -->
-          <div
-            th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
-            class="table-block"
-          >
-            <table class="custom-table">
-              <colgroup>
-                <col style="width: 35px" />
-                <col style="width: 129px" />
-                <col style="width: 90px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th colspan="2">Value Added Service(s)</th>
-                  <th>Line Qty</th>
-                  <th>One Time Charge (Per Line)</th>
-                  <th>Standard Monthly Fee (Per Line)</th>
-                  <th>Monthly Rebate (Per Line)</th>
-                  <th>Effective Monthly Fee (Per Line)</th>
-                  <th>Total Monthly Fee</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  th:each="product,indexInc : ${item.additionalEquipmentElementList}"
-                >
-                  <td th:text="${indexInc.count}">1</td>
-                  <td th:text="${product.name}">Business Broadband Service</td>
-                  <td th:text="${product.qty}">2</td>
-                  <td>
-                    <!-- 判断是否包含空格 -->
-                    <th:block
-                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <!-- 空格前的内容显示在删除线中 -->
-                      <s
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
-                      ></s>
-                      &nbsp;
-                      <!-- 空格后的内容显示在普通span中 -->
-                      <span
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
-                      ></span>
-                    </th:block>
-                    <!-- 不包含空格的情况 -->
-                    <th:block
-                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <span th:text="${product.oneTimeCharge}"></span>
-                    </th:block>
-                  </td>
-                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
-                  <td th:text="${product.monthlyRebate}">- $398</td>
-                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
-                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- 表格4: Premium(s) -->
-          <div
-            th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
-            class="table-block"
-          >
-            <table class="custom-table">
-              <colgroup>
-                <col style="width: 35px" />
-                <col style="width: 129px" />
-                <col style="width: 90px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th colspan="2">Premium(s)</th>
-                  <th>Premium Qty (Per Line)</th>
-                  <th>One Time Charge (Per Line)</th>
-                  <th>Standard Monthly Fee</th>
-                  <th>Monthly Rebate (Per Line)</th>
-                  <th>Effective Monthly Fee (Per Line)</th>
-                  <th>Total Monthly Fee</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="product,indexInc : ${item.premiumElementList}">
-                  <td th:text="${indexInc.count}">1</td>
-                  <td th:text="${product.name}">Business Broadband Service</td>
-                  <td th:text="${product.qty}">2</td>
-                  <td>
-                    <!-- 判断是否包含空格 -->
-                    <th:block
-                      th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <!-- 空格前的内容显示在删除线中 -->
-                      <s
-                        th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
-                      ></s>
-                      &nbsp;
-                      <!-- 空格后的内容显示在普通span中 -->
-                      <span
-                        th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
-                      ></span>
-                    </th:block>
-                    <!-- 不包含空格的情况 -->
-                    <th:block
-                      th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
-                    >
-                      <span th:text="${product.oneTimeCharge}"></span>
-                    </th:block>
-                  </td>
-                  <td th:text="${product.standardMonthlyFee}">$2,398</td>
-                  <td th:text="${product.monthlyRebate}">- $398</td>
-                  <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
-                  <td th:text="${product.totalMonthlyFee}">$4,000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- 表格5: Total Charge & Netvigator Admin Login -->
-          <div class="table-block">
-            <table class="custom-table">
-              <colgroup>
-                <col style="width: 35px" />
-                <col style="width: 129px" />
-                <col style="width: 90px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-              </colgroup>
-              <tbody>
-                <tr style="background-color: #d9d9d9">
-                  <td rowspan="2" colspan="2">Total Charge</td>
-                  <td colspan="2">One Time Charge</td>
-                  <td colspan="2">Monthly Service Fee</td>
-                  <td colspan="2">Contract Amount</td>
-                </tr>
-                <tr>
-                  <td colspan="2" th:text="${item.oneTimeCharge}">$0</td>
-                  <td colspan="2" th:text="${item.monthlyServiceFee}">
-                    $X,XXX
-                  </td>
-                  <td colspan="2" th:text="${item.contractAmount}">$XXXX</td>
-                </tr>
-                <tr>
-                  <td colspan="2" style="background-color: #d9d9d9">
-                    Netvigator Admin Login
-                  </td>
-                  <td colspan="6" class="email-td">
-                    <span class="line email-input-wrapper"></span>&nbsp;
-                    <span class="email-text">@biznetvigator.com</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- 表格6: Billing & Fulfillment Info -->
-          <div class="table-block">
-            <table
-              class="custom-table custom-table2"
-              style="border-bottom: 1px solid #000; border-top: none"
-            >
-              <colgroup>
-                <col style="width: 35px" />
-                <col style="width: 129px" />
-                <col style="width: 90px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-                <col style="width: 92.4px" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th colspan="8">Billing &amp; Fulfillment Info</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td colspan="2">Installation Address</td>
-                  <td colspan="6">
-                    <div th:text="${item.installationAddress}">
-                      G/F, BLOCK 1, PCCW HOLIDAY BUNGALOW, FA PENG ROAD, CHEUNG
-                      CHAU, NEW TERRITORIES
-                    </div>
-                    <div style="font-size: 11.7px">
-                      Note (1): For building/estate that the telecommunication
-                      infrastructure is not owned by Hong Kong Telecommunication
-                      (HKT) Limited, there will be additional 14 calendar days
-                      for provisioning the service.
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td rowspan="2" colspan="2">Billing Preference</td>
-                  <td colspan="6" class="billing-td">
-                    <div>
-                      <span class="custom-checkbox"></span>
-                      <span>Email address for receiving e-bills:</span>
-                      <div class="billing-line"></div>
-                    </div>
-                    <div>
-                      <span class="custom-checkbox"></span>
-                      <span>Paper bill (Charge: HK$20 per bill)</span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6">
-                    <div style="display: inline-block">
-                      <div
-                        class="custom-checkbox"
-                        style="
-                          display: inline-block;
-                          vertical-align: middle;
-                          margin: 0;
-                          margin-right: 5px;
-                          padding: 0 0 3px 1px;
-                        "
-                      >
-                        <img
-                          th:if="${item.accountNumber == null or item.accountNumber == ''}"
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-                        />
-                      </div>
-                      <span
-                        style="display: inline-block; vertical-align: middle"
-                        >New Account</span
-                      >
-                    </div>
-                    <div>
-                      <div
-                        class="custom-checkbox"
-                        style="
-                          display: inline-block;
-                          vertical-align: middle;
-                          margin: 0;
-                          margin-right: 5px;
-                          padding: 0 0 3px 1px;
-                        "
-                      >
-                        <img
-                          th:if="${item.accountNumber != null and item.accountNumber != ''}"
-                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-                        />
-                      </div>
-                      <span
-                        style="display: inline-block; vertical-align: middle"
-                        >Bill to Existing Account Number:
-                        <span
-                          style="
-                            display: inline-block;
-                            width: 200px;
-                            border-bottom: 1px solid #333;
-                          "
-                          th:text="${item.accountNumber}"
-                          >21321312</span
-                        >
-                      </span>
-                    </div>
-                    <div>
-                      <span class="custom-checkbox"></span>
-                      <b>Correspondence and billing address</b>
-                      <i> (if different from Installation Address):</i>
-                    </div>
-                    <div style="margin-top: 10px">
-                      <span>Flat / Room:</span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 103px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                      <span>Floor:</span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 103px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                      <span> Block / Tower: </span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 90px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                    </div>
-                    <div style="margin-top: 10px">
-                      <span>Building / Estate:</span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 182px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                      <span>Street:</span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 182px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                    </div>
-                    <div style="margin-top: 10px">
-                      <span>District</span>
-                      <span
-                        style="
-                          display: inline-block;
-                          width: 182px;
-                          background-color: #000;
-                          height: 1px;
-                        "
-                      ></span
-                      >,
-                      <span>
-                        [ &nbsp;&nbsp;] HK [ &nbsp;&nbsp;] KLN [ &nbsp;&nbsp;]
-                        NT</span
-                      >
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">Service Request Date</td>
-                  <td colspan="6" th:text="${item.serviceRequestDate}">
-                    XXXXX
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">Administrative Contact</td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Name</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.administrativeContact.name}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Tel. no / Mobile no</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.administrativeContact.mobileNo}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Email Address</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.administrativeContact.emailAddress}"
-                      >John Chan</span
-                    >
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colspan="2">Billing Contact</td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Name</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.billingContact.name}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Tel. no / Mobile no</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.billingContact.mobileNo}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Email Address</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.billingContact.emailAddress}"
-                      >John Chan</span
-                    >
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colspan="2">On-Site Contact</td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Name</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.onsiteContact.name}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Tel. no / Mobile no</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.onsiteContact.mobileNo}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Email Address</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.onsiteContact.emailAddress}"
-                      >John Chan</span
-                    >
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colspan="2">Technical Contact</td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Name</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.technicalContact.name}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Tel. no / Mobile no</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.technicalContact.mobileNo}"
-                      >John Chan</span
-                    >
-                  </td>
-
-                  <td colspan="2" class="contact-td">
-                    <span class="contact-label">Email Address</span>
-                    <span
-                      class="contact-value-wrapper"
-                      th:text="${item.technicalContact.emailAddress}"
-                      >John Chan</span
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- supplement table -->
-          <div th:utext="${item.supplementaryContent}"></div>
         </div>
+
+        <!-- 表格3: Value Added Service(s) -->
+        <div
+          th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
+          class="table-block"
+        >
+          <table class="custom-table">
+            <colgroup>
+              <col style="width: 33px" />
+              <col style="width: 119px" />
+              <col style="width: 90px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="2">Value Added Service(s)</th>
+                <th>Line Qty</th>
+                <th>One Time Charge (Per Line)</th>
+                <th>Standard Monthly Fee (Per Line)</th>
+                <th>Monthly Rebate (Per Line)</th>
+                <th>Effective Monthly Fee (Per Line)</th>
+                <th>Total Monthly Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                th:each="product,indexInc : ${item.additionalEquipmentElementList}"
+              >
+                <td th:text="${indexInc.count}">1</td>
+                <td th:text="${product.name}">Business Broadband Service</td>
+                <td th:text="${product.qty}">2</td>
+                <td>
+                  <!-- 判断是否包含空格 -->
+                  <th:block
+                    th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <!-- 空格前的内容显示在删除线中 -->
+                    <s
+                      th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                    ></s>
+                    &nbsp;
+                    <!-- 空格后的内容显示在普通span中 -->
+                    <span
+                      th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                    ></span>
+                  </th:block>
+                  <!-- 不包含空格的情况 -->
+                  <th:block
+                    th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <span th:text="${product.oneTimeCharge}"></span>
+                  </th:block>
+                </td>
+                <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                <td th:text="${product.monthlyRebate}">- $398</td>
+                <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                <td th:text="${product.totalMonthlyFee}">$4,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 表格4: Premium(s) -->
+        <div
+          th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
+          class="table-block"
+        >
+          <table class="custom-table">
+            <colgroup>
+              <col style="width: 35px" />
+              <col style="width: 129px" />
+              <col style="width: 90px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="2">Premium(s)</th>
+                <th>Premium Qty (Per Line)</th>
+                <th>One Time Charge (Per Line)</th>
+                <th>Standard Monthly Fee</th>
+                <th>Monthly Rebate (Per Line)</th>
+                <th>Effective Monthly Fee (Per Line)</th>
+                <th>Total Monthly Fee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="product,indexInc : ${item.premiumElementList}">
+                <td th:text="${indexInc.count}">1</td>
+                <td th:text="${product.name}">Business Broadband Service</td>
+                <td th:text="${product.qty}">2</td>
+                <td>
+                  <!-- 判断是否包含空格 -->
+                  <th:block
+                    th:if="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <!-- 空格前的内容显示在删除线中 -->
+                    <s
+                      th:text="${product.oneTimeCharge.substring(0, product.oneTimeCharge.indexOf(' '))}"
+                    ></s>
+                    &nbsp;
+                    <!-- 空格后的内容显示在普通span中 -->
+                    <span
+                      th:text="${product.oneTimeCharge.substring(product.oneTimeCharge.indexOf(' ') + 1)}"
+                    ></span>
+                  </th:block>
+                  <!-- 不包含空格的情况 -->
+                  <th:block
+                    th:unless="${product.oneTimeCharge != null and product.oneTimeCharge.contains(' ')}"
+                  >
+                    <span th:text="${product.oneTimeCharge}"></span>
+                  </th:block>
+                </td>
+                <td th:text="${product.standardMonthlyFee}">$2,398</td>
+                <td th:text="${product.monthlyRebate}">- $398</td>
+                <td th:text="${product.effectiveMonthlyFee}">$2,000</td>
+                <td th:text="${product.totalMonthlyFee}">$4,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 表格5: Total Charge & Netvigator Admin Login -->
+        <div class="table-block">
+          <table class="custom-table">
+            <colgroup>
+              <col style="width: 35px" />
+              <col style="width: 129px" />
+              <col style="width: 90px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+            </colgroup>
+            <tbody>
+              <tr style="background-color: #d9d9d9">
+                <td rowspan="2" colspan="2">Total Charge</td>
+                <td colspan="2">One Time Charge</td>
+                <td colspan="2">Monthly Service Fee</td>
+                <td colspan="2">Contract Amount</td>
+              </tr>
+              <tr>
+                <td colspan="2" th:text="${item.oneTimeCharge}">$0</td>
+                <td colspan="2" th:text="${item.monthlyServiceFee}">$X,XXX</td>
+                <td colspan="2" th:text="${item.contractAmount}">$XXXX</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="background-color: #d9d9d9">
+                  Netvigator Admin Login
+                </td>
+                <td colspan="6" class="email-td">
+                  <span class="line email-input-wrapper"></span>&nbsp;
+                  <span class="email-text">@biznetvigator.com</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 表格6: Billing & Fulfillment Info -->
+        <div class="table-block china">
+          <table
+            class="custom-table custom-table2"
+            style="border-bottom: 1px solid #000; border-top: none"
+          >
+            <colgroup>
+              <col style="width: 35px" />
+              <col style="width: 129px" />
+              <col style="width: 90px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+              <col style="width: 92.4px" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th colspan="8">Billing &amp; Fulfillment Info</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2">Installation Address</td>
+                <td colspan="6">
+                  <div th:text="${item.installationAddress}">
+                    G/F, BLOCK 1, PCCW HOLIDAY BUNGALOW, FA PENG ROAD, CHEUNG
+                    CHAU, NEW TERRITORIES
+                  </div>
+                  <div style="font-size: 11.7px">
+                    Note (1): For building/estate that the telecommunication
+                    infrastructure is not owned by Hong Kong Telecommunication
+                    (HKT) Limited, there will be additional 14 calendar days for
+                    provisioning the service.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td rowspan="2" colspan="2">Billing Preference</td>
+                <td colspan="6" class="billing-td">
+                  <div>
+                    <span class="custom-checkbox"></span>
+                    <span>Email address for receiving e-bills:</span>
+                    <div class="billing-line"></div>
+                  </div>
+                  <div>
+                    <span class="custom-checkbox"></span>
+                    <span>Paper bill (Charge: HK$20 per bill)</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <div style="display: inline-block">
+                    <div
+                      class="custom-checkbox"
+                      style="
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin: 0;
+                        margin-right: 5px;
+                        padding: 0 0 3px 1px;
+                      "
+                    >
+                      <img
+                        th:if="${item.accountNumber == null or item.accountNumber == ''}"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                      />
+                    </div>
+                    <span style="display: inline-block; vertical-align: middle"
+                      >New Account</span
+                    >
+                  </div>
+                  <div>
+                    <div
+                      class="custom-checkbox"
+                      style="
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin: 0;
+                        margin-right: 5px;
+                        padding: 0 0 3px 1px;
+                      "
+                    >
+                      <img
+                        th:if="${item.accountNumber != null and item.accountNumber != ''}"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                      />
+                    </div>
+                    <span style="display: inline-block; vertical-align: middle"
+                      >Bill to Existing Account Number:
+                      <span
+                        style="
+                          display: inline-block;
+                          width: 200px;
+                          border-bottom: 1px solid #333;
+                        "
+                        th:text="${item.accountNumber}"
+                        >21321312</span
+                      >
+                    </span>
+                  </div>
+                  <div>
+                    <span class="custom-checkbox"></span>
+                    <b>Correspondence and billing address</b>
+                    <i> (if different from Installation Address):</i>
+                  </div>
+                  <div style="margin-top: 10px">
+                    <span>Flat / Room:</span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 103px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                    <span>Floor:</span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 103px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                    <span> Block / Tower: </span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 90px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                  </div>
+                  <div style="margin-top: 10px">
+                    <span>Building / Estate:</span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 182px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                    <span>Street:</span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 182px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                  </div>
+                  <div style="margin-top: 10px">
+                    <span>District</span>
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 182px;
+                        background-color: #000;
+                        height: 1px;
+                      "
+                    ></span
+                    >,
+                    <span>
+                      [ &nbsp;&nbsp;] HK [ &nbsp;&nbsp;] KLN [ &nbsp;&nbsp;]
+                      NT</span
+                    >
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">Service Request Date</td>
+                <td colspan="6" th:text="${item.serviceRequestDate}">XXXXX</td>
+              </tr>
+              <tr>
+                <td colspan="2">Administrative Contact</td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Name</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.administrativeContact.name}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Tel. no / Mobile no</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.administrativeContact.mobileNo}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Email Address</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.administrativeContact.emailAddress}"
+                    >John Chan</span
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2">Billing Contact</td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Name</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.billingContact.name}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Tel. no / Mobile no</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.billingContact.mobileNo}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Email Address</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.billingContact.emailAddress}"
+                    >John Chan</span
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2">On-Site Contact</td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Name</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.onsiteContact.name}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Tel. no / Mobile no</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.onsiteContact.mobileNo}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Email Address</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.onsiteContact.emailAddress}"
+                    >John Chan</span
+                  >
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="2">Technical Contact</td>
+
+                <td colspan="2" class="contact-td china">
+                  <span class="contact-label">Name</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.technicalContact.name}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Tel. no / Mobile no</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.technicalContact.mobileNo}"
+                    >John Chan</span
+                  >
+                </td>
+
+                <td colspan="2" class="contact-td">
+                  <span class="contact-label">Email Address</span>
+                  <span
+                    class="contact-value-wrapper"
+                    th:text="${item.technicalContact.emailAddress}"
+                    >John Chan</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- supplement table -->
+        <div th:utext="${item.supplementaryContent}"></div>
       </div>
+      <!-- </div> -->
 
       <!-- Personal Information Collection Statement  -->
       <div class="table-block text-content page-break">
