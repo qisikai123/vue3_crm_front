@@ -1,5 +1,5 @@
 <!-- 表格7: Advanced Email  -->
-<div th:if="${product.elementId == '34000075'}" class="table-block">
+<div th:if="${product.elementId == '34000075'}" class="table-block page-break">
   <table
     class="custom-table custom-table2"
     style="border-bottom: 1px solid #000; border-top: none"
@@ -40,35 +40,36 @@
     <tr>
       <td colspan="3">
         <p>Please note that:</p>
-        <p>
+        <p style="margin-top: 12px">
           - the administrator can manage quota allocation for other users via
           customer portal at www.biznetvigator.com (by default is 400 MB per
           email account)
         </p>
-        <p>
+        <p style="margin-top: 12px">
           - for email service migration, it is highly recommended that you
           backup your emails from your existing email service provider prior to
           actual email migration.- migration is required if the domain name
           change from Leased Line to Business Broadband Service
         </p>
-        <p>
+        <p style="margin-top: 12px">
           The number of characters for an e-mail login should between 2-15
           characters. All characters should be in lower cases. No special
           characters such as #, $, * etc is allowed. It should begin with an
           alphabet. The number of characters for a domain name "login@domain"
           should be less than 36 characters.
         </p>
-        <p>
+        <p style="margin-top: 12px">
           The login ID will be auto-assigned if your preference is not
           applicable. It takes 5 working days to activate E-mail account or
           roaming service. A default mailbox size is provisioned, please visit
           www.biznetvigator.com and login your admin user account to manage your
           mailbox size.
         </p>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
+        <p style="margin-top: 12px">
+          A default mailbox size is provisioned, please visit
+          www.biznetvigator.com and login your admin user account to manage your
+          mailbox size.
+        </p>
         <table class="custom-table">
           <colgroup>
             <col style="width: 30px" />
@@ -80,16 +81,16 @@
             <tr>
               <td></td>
               <td>
-                Login ID first Choice<br />
-                (Within 15 characters)
+                <b>Login ID first Choice</b><br />
+                <i>(Within 15 characters)</i>
               </td>
               <td>
-                Login ID second Choice<br />
-                (Within 15 characters)
+                <b>Login ID second Choice</b><br />
+                <i>(Within 15 characters)</i>
               </td>
               <td>
-                Preferred Alias@domain<br />
-                Example:you@yourdomain.com
+                <b>Preferred Alias@domain</b><br />
+                <i>Example:you@yourdomain.com</i>
               </td>
             </tr>
             <tr th:each="i : ${#numbers.sequence(1,10)}">
@@ -113,15 +114,9 @@
             <li>Create E-mail Login: Waived within the term plan limit</li>
           </ul>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        Terms and Conditions (T&amp;C) of Value Added Service(s)
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
+        <div class="customer-tr">
+          Terms and Conditions (T&amp;C) of Value Added Service(s)
+        </div>
         <ol style="padding: 0 20px; line-height: 1.5">
           <li>
             The Company reserves right to remove the Customer's files or data
