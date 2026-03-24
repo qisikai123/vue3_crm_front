@@ -134,10 +134,39 @@
       .custom-table td {
         padding: 7px;
         text-align: center;
-        border: 1px solid #000;
-        border-bottom: 0.5px solid #000;
+        border-style: solid;
+        border-color: #000;
+        border-width: 0 0.5px 0.5px 0;
         word-break: break-all;
         overflow: hidden;
+      }
+
+      .custom-table tr > th:first-child,
+      .custom-table tr > td:first-child {
+        border-left-width: 1px;
+      }
+
+      .custom-table tr > th:last-child,
+      .custom-table tr > td:last-child {
+        border-right-width: 1px;
+      }
+
+      .custom-table > thead > tr:first-child > th,
+      .custom-table > thead > tr:first-child > td,
+      .custom-table > tbody > tr:first-child > th,
+      .custom-table > tbody > tr:first-child > td,
+      .custom-table > tr:first-child > th,
+      .custom-table > tr:first-child > td {
+        border-top-width: 1px;
+      }
+
+      .custom-table > tbody > tr:last-child > th,
+      .custom-table > tbody > tr:last-child > td,
+      .custom-table > tfoot > tr:last-child > th,
+      .custom-table > tfoot > tr:last-child > td,
+      .custom-table > tr:last-child > th,
+      .custom-table > tr:last-child > td {
+        border-bottom-width: 1px;
       }
 
       .custom-table th {
@@ -252,6 +281,9 @@
         border-top: #000 1px solid;
         width: 110%;
         margin-left: -7px;
+      }
+      .mesh-wifi li {
+        margin-top: 11px;
       }
     </style>
   </head>
@@ -1190,8 +1222,9 @@
                     later), for reasons not otherwise attributable to the fault
                     of HKT, this Application Form is deemed to be cancelled by
                     you automatically and you are on demand required to pay the
-                    Application Cancellation Charge.
+                    Application
                   </li>
+                  <span> Cancellation Charge. </span>
                   <li>
                     The Customer agrees to subscribe to the Service on a
                     month-to-month basis and pay the Monthly Fee(s) as indicated
