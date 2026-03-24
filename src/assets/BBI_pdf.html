@@ -108,18 +108,26 @@
         color: #333333;
         font-weight: bold;
         font-size: 16px;
-        line-height: 16px;
-        display: inline-block;
+        line-height: 1.3;
+        display: block;
         margin: 10px 0;
         padding: 10px 16px;
         background-color: #d9d9d9;
-        width: 100%;
+        width: 99%;
       }
       .custom-table {
         border-collapse: collapse;
         background-color: white;
         table-layout: fixed;
         font-size: 14px;
+      }
+
+      .charge-table {
+        width: 99%;
+      }
+
+      .customer-info-table {
+        width: 99%;
       }
 
       .custom-table th,
@@ -292,10 +300,10 @@
         Application Form to our sales representative for registration.
       </p>
       <div class="common-custom-title">Customer Information</div>
-      <table class="custom-table">
+      <table class="custom-table customer-info-table">
         <colgroup>
-          <col style="width: 210px" />
-          <col style="width: 506px" />
+          <col style="width: 29.33%" />
+          <col style="width: 70.67%" />
         </colgroup>
         <tr>
           <td style="text-align: left">Customer Name</td>
@@ -333,21 +341,20 @@
       <div class="common-custom-title">Offer Details</div>
 
       <!-- 表格1: Business Broadband基本信息 -->
-      <!-- <div class="table-block"> -->
       <div
         th:each="item, stat : ${pdfOrderInfoBo.orderLineInfoBos}"
         th:class="'table-block ' + (${stat.first} ? '' : 'page-break')"
       >
-        <table class="custom-table">
+        <table class="custom-table charge-table">
           <colgroup>
-            <col style="width: 35px" />
-            <col style="width: 129px" />
-            <col style="width: 90px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
+            <col style="width: 4.888%" />
+            <col style="width: 18.017%" />
+            <col style="width: 12.57%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
           </colgroup>
           <thead>
             <tr>
@@ -386,16 +393,16 @@
 
         <!-- 表格2: Product(s) / Service(s) -->
         <div class="table-block">
-          <table class="custom-table">
+          <table class="custom-table charge-table">
             <colgroup>
-              <col style="width: 35px" />
-              <col style="width: 129px" />
-              <col style="width: 90px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
+              <col style="width: 4.888%" />
+              <col style="width: 18.017%" />
+              <col style="width: 12.57%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -449,16 +456,16 @@
           th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
           class="table-block"
         >
-          <table class="custom-table">
+          <table class="custom-table charge-table">
             <colgroup>
-              <col style="width: 33px" />
-              <col style="width: 119px" />
-              <col style="width: 90px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
+              <col style="width: 4.888%" />
+              <col style="width: 18.017%" />
+              <col style="width: 12.57%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -514,16 +521,16 @@
           th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
           class="table-block"
         >
-          <table class="custom-table">
+          <table class="custom-table charge-table">
             <colgroup>
-              <col style="width: 35px" />
-              <col style="width: 129px" />
-              <col style="width: 90px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
+              <col style="width: 4.888%" />
+              <col style="width: 18.017%" />
+              <col style="width: 12.57%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -574,16 +581,16 @@
 
         <!-- 表格5: Total Charge & Netvigator Admin Login -->
         <div class="table-block">
-          <table class="custom-table">
+          <table class="custom-table charge-table">
             <colgroup>
-              <col style="width: 35px" />
-              <col style="width: 129px" />
-              <col style="width: 90px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
+              <col style="width: 4.888%" />
+              <col style="width: 18.017%" />
+              <col style="width: 12.57%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
             </colgroup>
             <tbody>
               <tr style="background-color: #d9d9d9">
@@ -613,18 +620,18 @@
         <!-- 表格6: Billing & Fulfillment Info -->
         <div class="table-block china">
           <table
-            class="custom-table custom-table2"
+            class="custom-table custom-table2 charge-table"
             style="border-bottom: 1px solid #000; border-top: none"
           >
             <colgroup>
-              <col style="width: 35px" />
-              <col style="width: 129px" />
-              <col style="width: 90px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
-              <col style="width: 92.4px" />
+              <col style="width: 4.888%" />
+              <col style="width: 18.017%" />
+              <col style="width: 12.57%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
+              <col style="width: 12.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -927,18 +934,18 @@
       <!-- Personal Information Collection Statement  -->
       <div class="table-block text-content page-break">
         <table
-          class="custom-table custom-table2"
+          class="custom-table custom-table2 charge-table"
           style="border-bottom: 1px solid #000; border-top: none"
         >
           <colgroup>
-            <col style="width: 35px" />
-            <col style="width: 129px" />
-            <col style="width: 90px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
+            <col style="width: 4.888%" />
+            <col style="width: 18.017%" />
+            <col style="width: 12.57%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
           </colgroup>
           <thead>
             <tr>
@@ -1085,18 +1092,18 @@
       <!-- Terms and Conditions (T&C)   -->
       <div class="table-block text-content">
         <table
-          class="custom-table custom-table2"
+          class="custom-table custom-table2 charge-table"
           style="border-bottom: 1px solid #000; border-top: none"
         >
           <colgroup>
-            <col style="width: 35px" />
-            <col style="width: 129px" />
-            <col style="width: 90px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
+            <col style="width: 4.888%" />
+            <col style="width: 18.017%" />
+            <col style="width: 12.57%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
           </colgroup>
           <thead>
             <tr>
@@ -1437,18 +1444,18 @@
       <!-- Non Office Hours Service Request    -->
       <div class="table-block text-content">
         <table
-          class="custom-table custom-table2"
+          class="custom-table custom-table2 charge-table"
           style="border-bottom: 1px solid #000; border-top: none"
         >
           <colgroup>
-            <col style="width: 35px" />
-            <col style="width: 129px" />
-            <col style="width: 90px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
+            <col style="width: 4.888%" />
+            <col style="width: 18.017%" />
+            <col style="width: 12.57%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
           </colgroup>
           <thead>
             <tr>
@@ -1499,18 +1506,18 @@
       <!-- Customer’s Agreement     -->
       <div class="table-block text-content">
         <table
-          class="custom-table custom-table2"
+          class="custom-table custom-table2 charge-table"
           style="border-bottom: 1px solid #000; border-top: none"
         >
           <colgroup>
-            <col style="width: 35px" />
-            <col style="width: 129px" />
-            <col style="width: 90px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
-            <col style="width: 92.4px" />
+            <col style="width: 4.888%" />
+            <col style="width: 18.017%" />
+            <col style="width: 12.57%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
+            <col style="width: 12.905%" />
           </colgroup>
           <thead>
             <tr>
