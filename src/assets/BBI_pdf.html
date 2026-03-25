@@ -256,6 +256,53 @@
       .tcContent {
         font-size: 12px;
       }
+
+      .signature-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        border: none;
+      }
+
+      .signature-table td {
+        width: 50%;
+        vertical-align: top;
+        border: none;
+        padding: 0;
+      }
+
+      .signature-left {
+        padding-right: 15px;
+      }
+
+      .signature-left-line {
+        width: 100%;
+        margin-top: 86px;
+        border-bottom: 1px solid #000;
+      }
+
+      .signature-left-text {
+        margin-top: 4px;
+        text-align: center;
+      }
+
+      .signature-right {
+        text-align: left;
+      }
+
+      .signature-right-content {
+        margin-left: 40px;
+      }
+
+      .signature-right .line {
+        width: 275px;
+        margin-left: 16px;
+      }
+
+      .signature-right .line-name {
+        width: 270px;
+        margin-left: 16px;
+      }
     </style>
   </head>
   <body>
@@ -1467,36 +1514,37 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="tcContent">
             <tr>
               <td colspan="8">
-                <p style="padding-left: 20px">
-                  - &nbsp;&nbsp;Office Hours are Monday to Friday from 09:00 to
-                  17:00 and Saturday from 09:00 to 13:00, except public holidays
+                <p>
+                  - &nbsp;&nbsp;&nbsp;&nbsp;Office Hours are Monday to Friday
+                  from 09:00 to 17:00 and Saturday from 09:00 to 13:00, except
+                  public holidays
                 </p>
-                <p style="padding-left: 20px; margin-top: 12px">
-                  - &nbsp;&nbsp;Installation Services (including but not limited
-                  to network service installation and relocation, network
-                  equipment and PC configuration and re-configuration) are
-                  carried out within the Office Hours.
+                <p style="margin-top: 6px">
+                  - &nbsp;&nbsp;&nbsp;&nbsp;Installation Services (including but
+                  not limited to network service installation and relocation,
+                  network equipment and PC configuration and re-configuration)
+                  are carried out within the Office Hours.
                 </p>
-                <p style="margin-top: 12px">
+                <p style="margin: 6px 0 0 15px">
                   Should the Customer request the Installation Services to be
                   carried out outside the Office Hours, there will be additional
                   service charge
                 </p>
-                <p style="margin-top: 12px">
+                <p style="margin-top: 6px">
                   [ &nbsp;&nbsp; ] Require Non Office Hours Installation
                   Services: additional service charge at HK$1,000 per job
                 </p>
-                <p style="margin-top: 12px">
+                <p style="margin-top: 6px; font-size: 11px">
                   [ &nbsp;&nbsp; ] Further require additional PC setup service:
                   further additional service charge at HK$250 per PC
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [ &nbsp;&nbsp; ] HK$1,000
+                  per PC after Non Office Hours
                 </p>
-                <p style="margin-top: 12px">
-                  [ &nbsp;&nbsp; ] HK$1,000 per PC after Non Office Hours
-                </p>
-                <p style="margin-top: 12px">
+                <p style="margin-top: 6px"></p>
+                <p style="margin: 6px 0 0 20px">
                   Number of additional PC setups service required: ______
                   unit(s)
                 </p>
@@ -1548,20 +1596,34 @@
                 <p style="margin-top: 12px">
                   For and on behalf of the Customer
                 </p>
-                <p style="margin-top: 12">(with Company Chop)</p>
-                <div style="position: relative; height: 150px">
-                  <div style="position: absolute; right: 1px">
-                    <p style="margin-top: 12px">
-                      Name: <span class="line" style="width: 110px"></span>
-                    </p>
-                    <p style="margin-top: 12px">
-                      Title: <span class="line" style="width: 120px"></span>
-                    </p>
-                    <p style="margin-top: 12px">
-                      Date: <span class="line" style="width: 120px"></span>
-                    </p>
-                  </div>
-                </div>
+                <p style="margin-top: 12px">(with Company Chop)</p>
+                <table class="signature-table">
+                  <colgroup>
+                    <col style="width: 50%" />
+                    <col style="width: 50%" />
+                  </colgroup>
+                  <tr>
+                    <td class="signature-left">
+                      <div class="signature-left-line"></div>
+                      <p class="signature-left-text">
+                        Authorised Signatory(ies)
+                      </p>
+                    </td>
+                    <td class="signature-right">
+                      <div class="signature-right-content">
+                        <p style="margin-top: 12px">
+                          Name: <span class="line line-name"></span>
+                        </p>
+                        <p style="margin-top: 12px">
+                          Title: <span class="line"></span>
+                        </p>
+                        <p style="margin-top: 12px">
+                          Date: <span class="line"></span>
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
           </tbody>
