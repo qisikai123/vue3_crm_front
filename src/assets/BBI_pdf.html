@@ -199,6 +199,29 @@
         top: -2px;
         left: 20px;
       }
+      .checkbox-row {
+        margin-top: 12px;
+        display: table;
+        width: 100%;
+        line-height: 1.2;
+      }
+      .checkbox-row .checkbox-box-cell {
+        display: table-cell;
+        vertical-align: middle;
+        width: 14px;
+      }
+      .checkbox-row .custom-checkbox {
+        margin-right: 0;
+        vertical-align: middle;
+      }
+      .checkbox-row .checkbox-text {
+        display: table-cell;
+        width: 100%;
+        position: static;
+        vertical-align: middle;
+        padding-left: 4px;
+        padding-top: 2px;
+      }
 
       /* 分页控制 */
       .table-block {
@@ -225,7 +248,6 @@
         font-size: 12px;
         line-height: 1.4;
       }
-
       .text-content > ol > li {
         margin-top: 1px;
       }
@@ -255,16 +277,10 @@
       .tcContent {
         font-size: 12px;
       }
-      .terms-flow-block {
-        page-break-inside: auto;
-      }
       .terms-flow-title {
         width: 99%;
-        border-left: 1px solid #000;
-        border-right: 1px solid #000;
-        border-bottom: 1px solid #000;
+        border: 1px solid #000;
         padding: 7px;
-        page-break-after: avoid;
       }
       .terms-flow-body {
         width: 99%;
@@ -273,7 +289,6 @@
         border-bottom: 1px solid #000;
         padding: 7px;
         font-size: 12px;
-        page-break-before: avoid;
       }
       .terms-paragraph {
         margin-top: 1px;
@@ -740,7 +755,7 @@
                     G/F, BLOCK 1, PCCW HOLIDAY BUNGALOW, FA PENG ROAD, CHEUNG
                     CHAU, NEW TERRITORIES
                   </div>
-                  <div style="font-size: 11.7px">
+                  <div style="font-size: 11px; margin-top: 20px">
                     Note (1): For building/estate that the telecommunication
                     infrastructure is not owned by Hong Kong Telecommunication
                     (HKT) Limited, there will be additional 14 calendar days for
@@ -751,56 +766,48 @@
               <tr>
                 <td rowspan="2" colspan="2">Billing Preference</td>
                 <td colspan="6">
-                  <div>
-                    <span class="custom-checkbox"></span>
-                    <span>Email address for receiving e-bills:</span>
+                  <div class="checkbox-row" style="margin-top: 0">
+                    <span class="checkbox-box-cell">
+                      <span class="custom-checkbox"></span>
+                    </span>
+                    <span class="checkbox-text">
+                      Email address for receiving e-bills:
+                    </span>
                   </div>
-                  <div>
-                    <span class="custom-checkbox"></span>
-                    <span>Paper bill (Charge: HK$20 per bill)</span>
+                  <div class="checkbox-row">
+                    <span class="checkbox-box-cell">
+                      <span class="custom-checkbox"></span>
+                    </span>
+                    <span class="checkbox-text">
+                      Paper bill (Charge: HK$20 per bill)
+                    </span>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="6">
-                  <div style="display: inline-block">
-                    <div
-                      class="custom-checkbox"
-                      style="
-                        display: inline-block;
-                        vertical-align: middle;
-                        margin: 0;
-                        margin-right: 5px;
-                        padding: 0 0 3px 1px;
-                      "
-                    >
-                      <img
-                        th:if="${item.accountNumber == null or item.accountNumber == ''}"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-                      />
-                    </div>
-                    <span style="display: inline-block; vertical-align: middle"
-                      >New Account</span
-                    >
+                  <div class="checkbox-row" style="margin-top: 0">
+                    <span class="checkbox-box-cell">
+                      <span class="custom-checkbox" style="margin: 0; padding: 0 0 3px 1px">
+                        <img
+                          th:if="${item.accountNumber == null or item.accountNumber == ''}"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                        />
+                      </span>
+                    </span>
+                    <span class="checkbox-text">New Account</span>
                   </div>
-                  <div>
-                    <div
-                      class="custom-checkbox"
-                      style="
-                        display: inline-block;
-                        vertical-align: middle;
-                        margin: 0;
-                        margin-right: 5px;
-                        padding: 0 0 3px 1px;
-                      "
-                    >
-                      <img
-                        th:if="${item.accountNumber != null and item.accountNumber != ''}"
-                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-                      />
-                    </div>
-                    <span style="display: inline-block; vertical-align: middle"
-                      >Bill to Existing Account Number:
+                  <div class="checkbox-row">
+                    <span class="checkbox-box-cell">
+                      <span class="custom-checkbox" style="margin: 0; padding: 0 0 3px 1px">
+                        <img
+                          th:if="${item.accountNumber != null and item.accountNumber != ''}"
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+                        />
+                      </span>
+                    </span>
+                    <span class="checkbox-text">
+                      Bill to Existing Account Number:
                       <span
                         style="
                           display: inline-block;
@@ -812,10 +819,14 @@
                       >
                     </span>
                   </div>
-                  <div>
-                    <span class="custom-checkbox"></span>
-                    <b>Correspondence and billing address</b>
-                    <i> (if different from Installation Address):</i>
+                  <div class="checkbox-row">
+                    <span class="checkbox-box-cell">
+                      <span class="custom-checkbox"></span>
+                    </span>
+                    <span class="checkbox-text">
+                      <b>Correspondence and billing address</b>
+                      <i> (if different from Installation Address):</i>
+                    </span>
                   </div>
                   <div style="margin-top: 10px">
                     <span>Flat / Room:</span>
@@ -864,7 +875,7 @@
                     <span
                       style="
                         display: inline-block;
-                        width: 182px;
+                        width: 175px;
                         background-color: #000;
                         height: 1px;
                       "
@@ -1043,7 +1054,7 @@
           </colgroup>
           <thead>
             <tr>
-              <th colspan="8" style="background-color: #fff">
+              <th colspan="8" style="background-color: #fff; font-weight: bold">
                 Personal Information Collection Statement
               </th>
             </tr>
@@ -1141,14 +1152,10 @@
                   I object to the proposed use of my Data for direct marketing
                   as stated above by the following entity(ies):
                 </p>
-                <div
-                  style="
-                    margin-top: 12px;
-                    line-height: 1; /* 重置行高，避免默认行高干扰 */
-                    position: relative;
-                  "
-                >
-                  <div class="custom-checkbox"></div>
+                <div class="checkbox-row">
+                  <span class="checkbox-box-cell">
+                    <span class="custom-checkbox"></span>
+                  </span>
                   <span class="checkbox-text">
                     The service provider(s) of the Services
                   </span>
@@ -1164,17 +1171,13 @@
                   PCCW Group's Group Data Protection Officer (GPO Box 9872 or
                   <a href="privacy@pccw.com">privacy@pccw.com</a>).
                 </p>
-                <div
-                  style="
-                    margin-top: 12px;
-                    line-height: 1; /* 重置行高，避免默认行高干扰 */
-                    position: relative;
-                  "
-                >
-                  <div class="custom-checkbox"></div>
+                <div class="checkbox-row">
+                  <span class="checkbox-box-cell">
+                    <span class="custom-checkbox"></span>
+                  </span>
                   <span class="checkbox-text">
                     I agree to the contents of the above Personal Information
-                    Collection Statemen
+                    Collection Statement
                   </span>
                 </div>
               </td>
@@ -1184,8 +1187,10 @@
       </div>
 
       <!-- Terms and Conditions (T&C)   -->
-      <div class="table-block text-content terms-flow-block">
-        <div class="terms-flow-title">Terms and Conditions (T&amp;C)</div>
+      <div class="table-block text-content page-break">
+        <div class="terms-flow-title" style="font-weight: bold">
+          Terms and Conditions (T&amp;C)
+        </div>
         <div class="terms-flow-body tcContent">
           <p class="terms-paragraph terms-level-1">
             1. Notwithstanding anything contained in the Special Conditions and
@@ -1499,7 +1504,7 @@
           </colgroup>
           <thead>
             <tr>
-              <th colspan="8" style="background-color: #fff">
+              <th colspan="8" style="background-color: #fff; font-weight: bold">
                 Non Office Hours Service Request
               </th>
             </tr>
@@ -1550,7 +1555,7 @@
       </div>
 
       <!-- Customer’s Agreement     -->
-      <div class="table-block text-content page-break">
+      <div class="table-block text-content">
         <table
           class="custom-table custom-table2 charge-table"
           style="border-bottom: 1px solid #000; border-top: none"
@@ -1567,7 +1572,7 @@
           </colgroup>
           <thead>
             <tr>
-              <th colspan="8" style="background-color: #fff">
+              <th colspan="8" style="background-color: #fff; font-weight: bold">
                 Customer’s Agreement
               </th>
             </tr>
