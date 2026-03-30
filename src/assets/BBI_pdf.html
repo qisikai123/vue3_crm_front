@@ -29,6 +29,7 @@
         background-color: #fff;
         font-size: 14px;
         line-height: 1.2;
+        padding: 20px;
       }
       a {
         color: #01408e;
@@ -146,9 +147,41 @@
         padding: 7px;
         text-align: center;
         border: 1px solid #000;
-        border-bottom: 0.5px solid #000;
+        /* border-bottom: 0.5px solid #000; */
         word-break: break-all;
         overflow: hidden;
+      }
+
+      .custom-table-thin-inner {
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .custom-table-thin-inner th,
+      .custom-table-thin-inner td {
+        border: 0;
+        border-right: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+
+      .custom-table-thin-inner tr:first-child > th,
+      .custom-table-thin-inner tr:first-child > td {
+        /* border-top: 1px solid #000; */
+      }
+
+      .custom-table-thin-inner tr > th:first-child,
+      .custom-table-thin-inner tr > td:first-child {
+        border-left: 1px solid #000;
+      }
+
+      .custom-table-thin-inner tr > th:last-child,
+      .custom-table-thin-inner tr > td:last-child {
+        border-right: 1px solid #000;
+      }
+
+      .custom-table-thin-inner tr:last-child > th,
+      .custom-table-thin-inner tr:last-child > td {
+        border-bottom: 1px solid #000;
       }
 
       .custom-table th {
@@ -467,14 +500,19 @@
       <div class="common-custom-title" style="margin-top: 50px">
         Customer Information
       </div>
-      <table class="custom-table customer-info-table">
+      <table class="custom-table custom-table-thin-inner customer-info-table">
         <colgroup>
           <col style="width: 34.475%" />
           <col style="width: 65.525%" />
         </colgroup>
         <tr>
-          <td style="text-align: left">Customer Name</td>
-          <td style="text-align: left" th:text="${pdfOrderInfoBo.customerName}">
+          <td style="text-align: left; border-top: 1px solid #000">
+            Customer Name
+          </td>
+          <td
+            style="text-align: left; border-top: 1px solid #000"
+            th:text="${pdfOrderInfoBo.customerName}"
+          >
             OSCA Customer 5
           </td>
         </tr>
@@ -512,7 +550,7 @@
         th:each="item, stat : ${pdfOrderInfoBo.orderLineInfoBos}"
         th:class="'table-block ' + (${stat.first} ? '' : 'page-break')"
       >
-        <table class="custom-table charge-table">
+        <table class="custom-table custom-table-thin-inner charge-table">
           <colgroup>
             <col style="width: 4.888%" />
             <col style="width: 17.017%" />
@@ -525,7 +563,10 @@
           </colgroup>
           <thead>
             <tr>
-              <th colspan="8" style="background-color: #fff">
+              <th
+                colspan="8"
+                style="background-color: #fff; border-top: 1px solid #000"
+              >
                 <div style="font-size: 16px">Business Broadband</div>
               </th>
             </tr>
@@ -558,7 +599,7 @@
 
         <!-- 表格2: Product(s) / Service(s) -->
         <div class="table-block">
-          <table class="custom-table charge-table">
+          <table class="custom-table custom-table-thin-inner charge-table">
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 17.017%" />
@@ -625,7 +666,10 @@
           th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
           class="table-block"
         >
-          <table class="custom-table charge-table">
+          <table
+            class="custom-table custom-table-thin-inner charge-table"
+            style="border-top: none"
+          >
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 17.017%" />
@@ -694,7 +738,10 @@
           th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
           class="table-block"
         >
-          <table class="custom-table charge-table">
+          <table
+            class="custom-table custom-table-thin-inner charge-table"
+            style="border-top: none"
+          >
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 17.017%" />
@@ -758,7 +805,10 @@
 
         <!-- 表格5: Total Charge & Netvigator Admin Login -->
         <div class="table-block">
-          <table class="custom-table charge-table">
+          <table
+            class="custom-table custom-table-thin-inner charge-table"
+            style="border-top: none"
+          >
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 17.017%" />
@@ -777,7 +827,13 @@
                 <td colspan="2">Contract Amount</td>
               </tr>
               <tr>
-                <td colspan="2" th:text="${item.oneTimeCharge}">$0</td>
+                <td
+                  colspan="2"
+                  th:text="${item.oneTimeCharge}"
+                  style="border-left: none"
+                >
+                  $0
+                </td>
                 <td colspan="2" th:text="${item.monthlyServiceFee}">$X,XXX</td>
                 <td colspan="2" th:text="${item.contractAmount}">$XXXX</td>
               </tr>
@@ -797,7 +853,7 @@
         <!-- 表格6: Billing & Fulfillment Info -->
         <div class="table-block">
           <table
-            class="custom-table custom-table2 charge-table"
+            class="custom-table custom-table-thin-inner custom-table2 charge-table"
             style="border-bottom: 1px solid #000; border-top: none"
           >
             <colgroup>
@@ -809,7 +865,9 @@
             </colgroup>
             <thead>
               <tr>
-                <th colspan="5">Billing &amp; Fulfillment Info</th>
+                <th colspan="5" style="border-top: 1px solid #000">
+                  Billing &amp; Fulfillment Info
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -850,7 +908,7 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="3">
+                <td colspan="3" style="border-left: none">
                   <div class="checkbox-row" style="margin-top: 0">
                     <span class="checkbox-box-cell">
                       <span
@@ -1075,9 +1133,11 @@
               </tr>
 
               <tr>
-                <td colspan="2">Technical Contact</td>
+                <td colspan="2" style="border-bottom: none">
+                  Technical Contact
+                </td>
 
-                <td class="contact-td">
+                <td class="contact-td" style="border-bottom: none">
                   <span class="contact-label">Name</span>
                   <span
                     class="contact-value-wrapper"
@@ -1086,7 +1146,7 @@
                   >
                 </td>
 
-                <td class="contact-td">
+                <td class="contact-td" style="border-bottom: none">
                   <span class="contact-label">Tel. no / Mobile no</span>
                   <span
                     class="contact-value-wrapper"
@@ -1095,7 +1155,10 @@
                   >
                 </td>
 
-                <td class="contact-td contact-inline-td">
+                <td
+                  class="contact-td contact-inline-td"
+                  style="border-bottom: none"
+                >
                   <div class="contact-inline-row">
                     <span class="contact-label">Email Address</span>
                     <span
@@ -1117,7 +1180,7 @@
 
       <!-- Personal Information Collection Statement  -->
       <table
-        class="custom-table custom-table2 charge-table page-break"
+        class="custom-table custom-table-thin-inner custom-table2 charge-table page-break"
         style="border-top: none"
       >
         <colgroup>
@@ -1134,7 +1197,12 @@
           <tr>
             <th
               colspan="8"
-              style="background-color: #fff; font-weight: bold; font-size: 15px"
+              style="
+                background-color: #fff;
+                font-weight: bold;
+                font-size: 15px;
+                border-top: 1px solid #000;
+              "
             >
               Personal Information Collection Statement
             </th>
