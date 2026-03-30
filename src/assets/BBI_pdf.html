@@ -80,10 +80,24 @@
         text-align: center;
         font-size: 10px;
         color: #333;
+      }
+
+      .footer-page-label:before {
+        content: "Page ";
+      }
+
+      .footer-page-current:before {
+        content: counter(page);
         font-weight: bold;
       }
-      .footer-page:before {
-        content: "Page " counter(page) "/" counter(pages);
+
+      .footer-page-separator:before {
+        content: " of ";
+      }
+
+      .footer-page-total:before {
+        content: counter(pages);
+        font-weight: bold;
       }
 
       .footer-img {
@@ -234,6 +248,10 @@
         padding: 7px !important;
       }
 
+      .contact-inline-td {
+        vertical-align: middle;
+      }
+
       .contact-label {
         font-size: 12px;
         line-height: 1.2;
@@ -247,6 +265,27 @@
         min-height: 18px;
         font-size: 12px;
         line-height: 1.4;
+      }
+
+      .contact-inline-row {
+        display: table;
+        width: 98%;
+        table-layout: fixed;
+      }
+
+      .contact-inline-row .contact-label {
+        display: table-cell;
+        width: 88px;
+        white-space: nowrap;
+        vertical-align: bottom;
+        margin-bottom: 0;
+      }
+
+      .contact-inline-row .contact-value-wrapper {
+        display: table-cell;
+        vertical-align: bottom;
+        min-height: 0;
+        line-height: 1.2;
       }
       .text-content > ol > li {
         margin-top: 1px;
@@ -378,12 +417,17 @@
       <!-- 页脚 -->
       <div class="footer-container">
         <div class="footer-text">
-          <div class="fw-b">HKT Limited</div>
+          <div class="fw-b"><b>HKT Limited</b></div>
           <div>PO Box 9896 GPO Hong Kong T +852 2888 2888 F +852 2877 8877</div>
           <a href="www.hkt.com">www.hkt.com</a>
         </div>
 
-        <div class="footer-page"></div>
+        <div class="footer-page">
+          <span class="footer-page-label"></span>
+          <span class="footer-page-current"></span>
+          <span class="footer-page-separator"></span>
+          <span class="footer-page-total"></span>
+        </div>
 
         <div class="footer-img">
           <img
@@ -395,7 +439,7 @@
 
       <div
         style="
-          font-size: 17px;
+          font-size: 23px;
           line-height: 36px;
           color: #000;
           text-align: center;
@@ -507,11 +551,11 @@
               <col style="width: 4.888%" />
               <col style="width: 18.017%" />
               <col style="width: 12.57%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 14.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -570,11 +614,11 @@
               <col style="width: 4.888%" />
               <col style="width: 18.017%" />
               <col style="width: 12.57%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 14.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -635,11 +679,11 @@
               <col style="width: 4.888%" />
               <col style="width: 18.017%" />
               <col style="width: 12.57%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 14.905%" />
             </colgroup>
             <thead>
               <tr>
@@ -695,11 +739,11 @@
               <col style="width: 4.888%" />
               <col style="width: 18.017%" />
               <col style="width: 12.57%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 12.405%" />
+              <col style="width: 14.905%" />
             </colgroup>
             <tbody>
               <tr style="background-color: #d9d9d9">
@@ -735,12 +779,9 @@
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 18.017%" />
-              <col style="width: 12.57%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
-              <col style="width: 12.905%" />
+              <col style="width: 19%" />
+              <col style="width: 20%" />
+              <col style="width: 38.095%" />
             </colgroup>
             <thead>
               <tr>
@@ -750,7 +791,7 @@
             <tbody>
               <tr>
                 <td colspan="2">Installation Address</td>
-                <td colspan="6">
+                <td colspan="3">
                   <div th:text="${item.installationAddress}">
                     G/F, BLOCK 1, PCCW HOLIDAY BUNGALOW, FA PENG ROAD, CHEUNG
                     CHAU, NEW TERRITORIES
@@ -765,7 +806,7 @@
               </tr>
               <tr>
                 <td rowspan="2" colspan="2">Billing Preference</td>
-                <td colspan="6">
+                <td colspan="3">
                   <div class="checkbox-row" style="margin-top: 0">
                     <span class="checkbox-box-cell">
                       <span class="custom-checkbox"></span>
@@ -785,7 +826,7 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="6">
+                <td colspan="3">
                   <div class="checkbox-row" style="margin-top: 0">
                     <span class="checkbox-box-cell">
                       <span
@@ -908,12 +949,12 @@
               </tr>
               <tr>
                 <td colspan="2">Service Request Date</td>
-                <td colspan="6" th:text="${item.serviceRequestDate}">XXXXX</td>
+                <td colspan="3" th:text="${item.serviceRequestDate}">XXXXX</td>
               </tr>
               <tr>
                 <td colspan="2">Administrative Contact</td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Name</span>
                   <span
                     class="contact-value-wrapper"
@@ -922,7 +963,7 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Tel. no / Mobile no</span>
                   <span
                     class="contact-value-wrapper"
@@ -931,20 +972,22 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
-                  <span class="contact-label">Email Address</span>
-                  <span
-                    class="contact-value-wrapper"
-                    th:text="${item.administrativeContact.emailAddress}"
-                    >John Chan</span
-                  >
+                <td class="contact-td contact-inline-td">
+                  <div class="contact-inline-row">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${item.administrativeContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </div>
                 </td>
               </tr>
 
               <tr>
                 <td colspan="2">Billing Contact</td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Name</span>
                   <span
                     class="contact-value-wrapper"
@@ -953,7 +996,7 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Tel. no / Mobile no</span>
                   <span
                     class="contact-value-wrapper"
@@ -962,20 +1005,22 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
-                  <span class="contact-label">Email Address</span>
-                  <span
-                    class="contact-value-wrapper"
-                    th:text="${item.billingContact.emailAddress}"
-                    >John Chan</span
-                  >
+                <td class="contact-td contact-inline-td">
+                  <div class="contact-inline-row">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${item.billingContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </div>
                 </td>
               </tr>
 
               <tr>
                 <td colspan="2">On-Site Contact</td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Name</span>
                   <span
                     class="contact-value-wrapper"
@@ -984,7 +1029,7 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Tel. no / Mobile no</span>
                   <span
                     class="contact-value-wrapper"
@@ -993,20 +1038,22 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
-                  <span class="contact-label">Email Address</span>
-                  <span
-                    class="contact-value-wrapper"
-                    th:text="${item.onsiteContact.emailAddress}"
-                    >John Chan</span
-                  >
+                <td class="contact-td contact-inline-td">
+                  <div class="contact-inline-row">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${item.onsiteContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </div>
                 </td>
               </tr>
 
               <tr>
                 <td colspan="2">Technical Contact</td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Name</span>
                   <span
                     class="contact-value-wrapper"
@@ -1015,7 +1062,7 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
+                <td class="contact-td">
                   <span class="contact-label">Tel. no / Mobile no</span>
                   <span
                     class="contact-value-wrapper"
@@ -1024,13 +1071,15 @@
                   >
                 </td>
 
-                <td colspan="2" class="contact-td">
-                  <span class="contact-label">Email Address</span>
-                  <span
-                    class="contact-value-wrapper"
-                    th:text="${item.technicalContact.emailAddress}"
-                    >John Chan</span
-                  >
+                <td class="contact-td contact-inline-td">
+                  <div class="contact-inline-row">
+                    <span class="contact-label">Email Address</span>
+                    <span
+                      class="contact-value-wrapper"
+                      th:text="${item.technicalContact.emailAddress}"
+                      >John Chan</span
+                    >
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -1536,8 +1585,11 @@
                 <p style="margin-top: 1px">
                   - &nbsp;&nbsp;&nbsp;&nbsp;Installation Services (including but
                   not limited to network service installation and relocation,
-                  network equipment and PC configuration and re-configuration)
-                  are carried out within the Office Hours.
+                  network equipment and
+                </p>
+                <p style="margin: 1px 0 0 15px">
+                  PC configuration and re-configuration) are carried out within
+                  the Office Hours.
                 </p>
                 <p style="margin: 1px 0 0 15px">
                   Should the Customer request the Installation Services to be
