@@ -24,40 +24,52 @@
     </tr>
     <tr>
       <td>
-        <div class="custom-checkbox custom-checkbox2">
-          <img
-            th:if="${product.itemMap.PM_BB_2_4GHz_SSID != null and product.itemMap.PM_BB_2_4GHz_SSID != ''}"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-          />
+        <div class="checkbox-row" style="margin-top: 0">
+          <span class="checkbox-box-cell">
+            <span class="custom-checkbox custom-checkbox2">
+              <img
+                th:if="${product.itemMap.PM_BB_2_4GHz_SSID != null and product.itemMap.PM_BB_2_4GHz_SSID != ''}"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+              />
+            </span>
+          </span>
+          <span class="checkbox-text">
+            2.4GHz:
+            <span th:text="${product.itemMap.PM_BB_2_4GHz_SSID}"></span>
+          </span>
         </div>
-        <span>
-          2.4GHz:
-          <span th:text="${product.itemMap.PM_BB_2_4GHz_SSID}"></span>
-        </span>
       </td>
       <td>
-        <div class="custom-checkbox custom-checkbox2">
-          <img
-            th:if="${product.itemMap.PM_BB_5GHz_SSID != null and product.itemMap.PM_BB_5GHz_SSID != ''}"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-          />
+        <div class="checkbox-row" style="margin-top: 0">
+          <span class="checkbox-box-cell">
+            <span class="custom-checkbox custom-checkbox2">
+              <img
+                th:if="${product.itemMap.PM_BB_5GHz_SSID != null and product.itemMap.PM_BB_5GHz_SSID != ''}"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+              />
+            </span>
+          </span>
+          <span class="checkbox-text">
+            5GHz:
+            <span th:text="${product.itemMap.PM_BB_5GHz_SSID}"></span>
+          </span>
         </div>
-        <span>
-          5GHz:
-          <span th:text="${product.itemMap.PM_BB_5GHz_SSID}"></span>
-        </span>
       </td>
       <td>
-        <div class="custom-checkbox custom-checkbox2">
-          <img
-            th:if="${product.itemMap.PM_BB_6GHz_SSID != null and product.itemMap.PM_BB_6GHz_SSID != ''}"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
-          />
+        <div class="checkbox-row" style="margin-top: 0">
+          <span class="checkbox-box-cell">
+            <span class="custom-checkbox custom-checkbox2">
+              <img
+                th:if="${product.itemMap.PM_BB_6GHz_SSID != null and product.itemMap.PM_BB_6GHz_SSID != ''}"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAmElEQVR4AdSQ3Q2AIAyEjZPhZOpk4mR6n0kJIjURnjRe2no/Fsah8/l3QNDpQ+sRFpk3YWgJwDzLPAnxa8DNrIC0AQTzG9CkP5sw3+A6kxFFrZrRWACCXR8OgdtVSS/c48/GWgAzwlUNm1gI1TVLm+6AHhDC7RJCT2WOkDXkGxiPGBMzlZm+iloAQkxsQGV24QW4hpLoDjgBAAD//5ea/pMAAAAGSURBVAMA53cbIUkrt/4AAAAASUVORK5CYII="
+              />
+            </span>
+          </span>
+          <span class="checkbox-text">
+            6GHz:
+            <span th:text="${product.itemMap.PM_BB_6GHz_SSID}"></span>
+          </span>
         </div>
-        <span>
-          6GHz:
-          <span th:text="${product.itemMap.PM_BB_6GHz_SSID}"></span>
-        </span>
       </td>
     </tr>
     <tr>
