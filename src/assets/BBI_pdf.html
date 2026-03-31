@@ -159,10 +159,10 @@
         border-bottom: 1px solid #000;
       }
 
-      /* .custom-table-thin-inner tr:first-child > th,
-      .custom-table-thin-inner tr:first-child > td {
+      .custom-table-thin-inner.table-outline-top tr:first-child > th {
+        /* .custom-table-thin-inner.table-outline-top tr:first-child > td { */
         border-top: 1px solid #000;
-      } */
+      }
 
       .custom-table-thin-inner tr > th:first-child,
       .custom-table-thin-inner tr > td:first-child {
@@ -283,6 +283,10 @@
       .table-block {
         page-break-inside: avoid;
         margin-bottom: 0;
+      }
+
+      .table-block-joined {
+        margin-top: -1px;
       }
 
       .contact-td {
@@ -441,11 +445,6 @@
         margin-left: 22px;
         width: 293px;
       }
-
-      .tr-border td,
-      .tr-border th {
-        border-top: 1px solid #000;
-      }
     </style>
   </head>
   <body>
@@ -598,8 +597,10 @@
         </table>
 
         <!-- 表格2: Product(s) / Service(s) -->
-        <div class="table-block">
-          <table class="custom-table custom-table-thin-inner charge-table">
+        <div class="table-block table-block-joined">
+          <table
+            class="custom-table custom-table-thin-inner table-outline-top charge-table"
+          >
             <colgroup>
               <col style="width: 4.888%" />
               <col style="width: 17.017%" />
@@ -611,7 +612,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr class="tr-border">
+              <tr>
                 <th colspan="2">Product(s) / Service(s)</th>
                 <th>Line Qty</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -664,11 +665,10 @@
         <!-- 表格3: Value Added Service(s) -->
         <div
           th:if="${item.additionalEquipmentElementList != null and #lists.size(item.additionalEquipmentElementList) > 0}"
-          class="table-block"
+          class="table-block table-block-joined"
         >
           <table
-            class="custom-table custom-table-thin-inner charge-table"
-            style="border-top: none"
+            class="custom-table custom-table-thin-inner table-outline-top charge-table"
           >
             <colgroup>
               <col style="width: 4.888%" />
@@ -681,7 +681,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr class="tr-border">
+              <tr>
                 <th colspan="2">Value Added Service(s)</th>
                 <th>Line Qty</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -736,11 +736,10 @@
         <!-- 表格4: Premium(s) -->
         <div
           th:if="${item.premiumElementList != null and #lists.size(item.premiumElementList) > 0}"
-          class="table-block"
+          class="table-block table-block-joined"
         >
           <table
-            class="custom-table custom-table-thin-inner charge-table"
-            style="border-top: none"
+            class="custom-table custom-table-thin-inner table-outline-top charge-table"
           >
             <colgroup>
               <col style="width: 4.888%" />
@@ -753,7 +752,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr class="tr-border">
+              <tr>
                 <th colspan="2">Premium(s)</th>
                 <th>Premium Qty<br />(Per Line)</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -804,10 +803,9 @@
         </div>
 
         <!-- 表格5: Total Charge & Netvigator Admin Login -->
-        <div class="table-block">
+        <div class="table-block table-block-joined">
           <table
-            class="custom-table custom-table-thin-inner charge-table"
-            style="border-top: none"
+            class="custom-table custom-table-thin-inner table-outline-top charge-table"
           >
             <colgroup>
               <col style="width: 4.888%" />
@@ -820,11 +818,19 @@
               <col style="width: 14.905%" />
             </colgroup>
             <tbody>
-              <tr style="background-color: #d9d9d9" class="tr-border">
-                <td rowspan="2" colspan="2">Total Charge</td>
-                <td colspan="2">One Time Charge</td>
-                <td colspan="2">Monthly Service Fee</td>
-                <td colspan="2">Contract Amount</td>
+              <tr style="background-color: #d9d9d9">
+                <td rowspan="2" colspan="2" style="border-top: 1px solid #000">
+                  Total Charge
+                </td>
+                <td colspan="2" style="border-top: 1px solid #000">
+                  One Time Charge
+                </td>
+                <td colspan="2" style="border-top: 1px solid #000">
+                  Monthly Service Fee
+                </td>
+                <td colspan="2" style="border-top: 1px solid #000">
+                  Contract Amount
+                </td>
               </tr>
               <tr>
                 <td
@@ -851,10 +857,10 @@
         </div>
 
         <!-- 表格6: Billing & Fulfillment Info -->
-        <div class="table-block">
+        <div class="table-block table-block-joined">
           <table
-            class="custom-table custom-table-thin-inner custom-table2 charge-table"
-            style="border-bottom: 1px solid #000; border-top: none"
+            class="custom-table custom-table-thin-inner custom-table2 table-outline-top charge-table"
+            style="border-bottom: 1px solid #000"
           >
             <colgroup>
               <col style="width: 4.888%" />
