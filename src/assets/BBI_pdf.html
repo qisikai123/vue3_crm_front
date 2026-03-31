@@ -159,10 +159,10 @@
         border-bottom: 1px solid #000;
       }
 
-      .custom-table-thin-inner tr:first-child > th,
+      /* .custom-table-thin-inner tr:first-child > th,
       .custom-table-thin-inner tr:first-child > td {
-        /* border-top: 1px solid #000; */
-      }
+        border-top: 1px solid #000;
+      } */
 
       .custom-table-thin-inner tr > th:first-child,
       .custom-table-thin-inner tr > td:first-child {
@@ -441,6 +441,11 @@
         margin-left: 22px;
         width: 293px;
       }
+
+      .tr-border td,
+      .tr-border th {
+        border-top: 1px solid #000;
+      }
     </style>
   </head>
   <body>
@@ -606,7 +611,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr>
+              <tr class="tr-border">
                 <th colspan="2">Product(s) / Service(s)</th>
                 <th>Line Qty</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -676,7 +681,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr>
+              <tr class="tr-border">
                 <th colspan="2">Value Added Service(s)</th>
                 <th>Line Qty</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -748,7 +753,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <thead>
-              <tr>
+              <tr class="tr-border">
                 <th colspan="2">Premium(s)</th>
                 <th>Premium Qty<br />(Per Line)</th>
                 <th>One Time Charge<br />(Per Line)</th>
@@ -815,7 +820,7 @@
               <col style="width: 14.905%" />
             </colgroup>
             <tbody>
-              <tr style="background-color: #d9d9d9">
+              <tr style="background-color: #d9d9d9" class="tr-border">
                 <td rowspan="2" colspan="2">Total Charge</td>
                 <td colspan="2">One Time Charge</td>
                 <td colspan="2">Monthly Service Fee</td>
