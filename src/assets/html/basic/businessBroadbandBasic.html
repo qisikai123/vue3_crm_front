@@ -1,7 +1,7 @@
 <div class="common-custom-title">Offer Details</div>
 <div
   th:each="item, stat : ${pdfOrderInfoBo.orderLineInfoBos}"
-  th:class="'table-block ' + (${stat.first} ? '' : 'page-break')"
+  th:class="'table-block product-table-block ' + (${stat.first} ? '' : 'page-break')"
 >
   <table class="custom-table custom-table-thin-inner charge-table">
     <colgroup>

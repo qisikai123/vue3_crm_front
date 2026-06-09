@@ -20,6 +20,11 @@ const vasTemplates = [
   "src/assets/html/m-elite/m-Elite-mesh_wifi_router.html"
 ];
 
+const productTemplates = [
+  "src/assets/html/basic/businessBroadbandBasic.html",
+  "src/assets/html/m-elite/BBI_m-Elite.html"
+];
+
 const failures = [];
 
 function expectIncludes(content, expected, label) {
@@ -41,6 +46,11 @@ const vasTableRuleBody = vasTableRule?.groups?.body ?? "";
 
 expectIncludes(vasTableRuleBody, "-fs-table-paginate: paginate;", "vas-table");
 expectIncludes(vasTableRuleBody, "border-top: 1px solid #000;", "vas-table");
+expectIncludes(
+  baseTemplate,
+  ".product-table-block + .product-table-block",
+  "BBI_base.html"
+);
 
 for (const templatePath of vasTemplates) {
   const content = readFileSync(join(root, templatePath), "utf8");
@@ -54,6 +64,12 @@ for (const templatePath of vasTemplates) {
   if (/style="[^"]*border-top:\s*none/i.test(content)) {
     failures.push(`${templatePath} still disables the VAS table top border`);
   }
+}
+
+for (const templatePath of productTemplates) {
+  const content = readFileSync(join(root, templatePath), "utf8");
+
+  expectIncludes(content, "product-table-block", templatePath);
 }
 
 if (failures.length > 0) {
