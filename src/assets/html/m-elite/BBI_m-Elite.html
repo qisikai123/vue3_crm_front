@@ -1,6 +1,7 @@
 <div
   th:each="item, stat : ${pdfOrderInfoBo.orderLineInfoBos}"
   th:class="'table-block product-table-block ' + (${stat.first} ? '' : 'page-break')"
+  style="margin-top: 0px"
 >
   <table class="custom-table custom-table-thin-inner charge-table">
     <colgroup>
