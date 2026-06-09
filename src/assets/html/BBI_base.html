@@ -1,5 +1,4 @@
-<!-- DOCTYPE -->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
@@ -150,6 +149,11 @@
       .custom-table-thin-inner {
         border-collapse: separate;
         border-spacing: 0;
+      }
+
+      .custom-table-thin-inner.vas-table {
+        border-top: 1px solid #000;
+        -fs-table-paginate: paginate;
       }
 
       .custom-table-thin-inner th,
