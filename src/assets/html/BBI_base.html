@@ -205,8 +205,15 @@
         line-height: 1.2;
       }
 
+      .no-table,
       .no-table td,
-      .no-table th {
+      .no-table th,
+      .custom-table-thin-inner .no-table tr > td:first-child,
+      .custom-table-thin-inner .no-table tr > th:first-child,
+      .custom-table-thin-inner .no-table tr > td:last-child,
+      .custom-table-thin-inner .no-table tr > th:last-child,
+      .custom-table-thin-inner .no-table tr:last-child > td,
+      .custom-table-thin-inner .no-table tr:last-child > th {
         padding: 0;
         border: none;
       }
@@ -712,7 +719,7 @@
       <!-- FIXED:ONLY:FIXED_TC3:94000001,94000002 -->
 
       <!-- Non Office Hours Service Request    -->
-      <div class="table-block" style="margin-top: 24px">
+      <div class="table-block">
         <table
           class="custom-table custom-table2 charge-table"
           style="border-top: none; font-size: 15px"
